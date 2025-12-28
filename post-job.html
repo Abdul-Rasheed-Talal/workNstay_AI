@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Post a Job - WorkNStay AI">
+    <title>Post a Job - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .sidebar-brand span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--gray-900);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .nav-item.active {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+            width: 24px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: var(--bg-secondary);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .content-area {
+            padding: 32px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* Form Wizard Styles */
+        .wizard-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .wizard-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gray-200);
+            z-index: 0;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--gray-300);
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .step-item.active .step-circle {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(26, 127, 90, 0.1);
+        }
+
+        .step-item.completed .step-circle {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+        }
+
+        .step-item.active .step-label {
+            color: var(--primary);
+        }
+
+        .form-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tag-input-container {
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 48px;
+        }
+
+        .tag-input-badg {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-input-badg i {
+            cursor: pointer;
+        }
+
+        .tag-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 120px;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-check-fill"></i>
+                    </div>
+                    <span>WorkNStay</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="employer-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="post-job.html" class="nav-item active">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Post a Job</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="manage-jobs.html" class="nav-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        <span>My Jobs</span>
+                    </a>
+                    <a href="manage-applications.html" class="nav-item">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Applications</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-chat-dots-fill"></i>
+                        <span>Messages</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Company</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-building-fill"></i>
+                        <span>Company Profile</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-gear-fill"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn d-lg-none" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Post a New Job</h1>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="topbar-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-profile d-flex align-items-center gap-2">
+                        <div class="avatar avatar-sm">
+                            <img src="https://ui-avatars.com/api/?name=Tech+Corp&background=1a7f5a&color=fff"
+                                alt="Tech Corp">
+                        </div>
+                        <div class="d-none d-md-block">
+                            <div style="font-size: 14px; font-weight: 600;">Tech Corp Solutions</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <!-- Wizard Steps -->
+                        <div class="wizard-steps">
+                            <div class="step-item active" id="step1-indicator">
+                                <div class="step-circle">1</div>
+                                <div class="step-label">Job Details</div>
+                            </div>
+                            <div class="step-item" id="step2-indicator">
+                                <div class="step-circle">2</div>
+                                <div class="step-label">Requirements</div>
+                            </div>
+                            <div class="step-item" id="step3-indicator">
+                                <div class="step-circle">3</div>
+                                <div class="step-label">Compensation</div>
+                            </div>
+                            <div class="step-item" id="step4-indicator">
+                                <div class="step-circle">4</div>
+                                <div class="step-label">Preview</div>
+                            </div>
+                        </div>
+
+                        <form id="jobForm" onsubmit="event.preventDefault();">
+                            <!-- Step 1: Job Details -->
+                            <div class="form-section active" id="step1">
+                                <div class="card-custom">
+                                    <div class="card-header-custom">
+                                        <h5 class="mb-0">Basic Information</h5>
+                                    </div>
+                                    <div class="card-body-custom">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label-custom">Job Title</label>
+                                                <input type="text" class="form-control-custom"
+                                                    placeholder="e.g. Senior Web Developer">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label-custom">Job Type</label>
+                                                <select class="form-control-custom form-select-custom">
+                                                    <option>Full Time</option>
+                                                    <option>Part Time</option>
+                                                    <option>Internship</option>
+                                                    <option>Contract</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label-custom">Workplace Type</label>
+                                                <select class="form-control-custom form-select-custom">
+                                                    <option>On-site</option>
+                                                    <option>Hybrid</option>
+                                                    <option>Remote</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label-custom">Job Description</label>
+                                                <textarea class="form-control-custom" rows="6"
+                                                    placeholder="Describe the role, responsibilities, and company culture..."></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mt-4">
+                                            <button type="button" class="btn btn-primary btn-custom"
+                                                onclick="nextStep(2)">Next: Requirements</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Requirements -->
+                            <div class="form-section" id="step2">
+                                <div class="card-custom">
+                                    <div class="card-header-custom">
+                                        <h5 class="mb-0">Requirements & Skills</h5>
+                                    </div>
+                                    <div class="card-body-custom">
+                                        <div class="mb-4">
+                                            <label class="form-label-custom">Required Skills</label>
+                                            <div class="tag-input-container">
+                                                <div class="tag-input-badg">HTML5 <i class="bi bi-x"></i></div>
+                                                <div class="tag-input-badg">CSS3 <i class="bi bi-x"></i></div>
+                                                <div class="tag-input-badg">JavaScript <i class="bi bi-x"></i></div>
+                                                <input type="text" class="tag-input"
+                                                    placeholder="Type a skill and press Enter">
+                                            </div>
+                                            <div class="form-hint">Press Enter to add tags</div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-custom">Education Level</label>
+                                            <select class="form-control-custom form-select-custom">
+                                                <option>Intermediate / DAE</option>
+                                                <option>Bachelors Degree</option>
+                                                <option>Masters Degree</option>
+                                                <option>No Preference</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label-custom">Experience Required</label>
+                                            <div class="row g-3">
+                                                <div class="col-6">
+                                                    <select class="form-control-custom form-select-custom">
+                                                        <option>Minimum Years</option>
+                                                        <option>0 (Fresh)</option>
+                                                        <option>1 Year</option>
+                                                        <option>2 Years</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <select class="form-control-custom form-select-custom">
+                                                        <option>Maximum Years</option>
+                                                        <option>2 Years</option>
+                                                        <option>5 Years</option>
+                                                        <option>5+ Years</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <button type="button" class="btn btn-outline-secondary btn-custom"
+                                                onclick="nextStep(1)">Back</button>
+                                            <button type="button" class="btn btn-primary btn-custom"
+                                                onclick="nextStep(3)">Next: Compensation</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Compensation -->
+                            <div class="form-section" id="step3">
+                                <div class="card-custom">
+                                    <div class="card-header-custom">
+                                        <h5 class="mb-0">Salary & Benefits</h5>
+                                    </div>
+                                    <div class="card-body-custom">
+                                        <div class="mb-4">
+                                            <label class="form-label-custom">Salary Range (PKR)</label>
+                                            <div class="row g-3">
+                                                <div class="col-md-5">
+                                                    <input type="number" class="form-control-custom"
+                                                        placeholder="Minimum">
+                                                </div>
+                                                <div
+                                                    class="col-md-2 text-center d-flex align-items-center justify-content-center text-muted">
+                                                    to</div>
+                                                <div class="col-md-5">
+                                                    <input type="number" class="form-control-custom"
+                                                        placeholder="Maximum">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-custom">Salary Period</label>
+                                            <div class="d-flex gap-4">
+                                                <div class="form-check-custom">
+                                                    <input type="radio" name="period" class="form-check-input-custom"
+                                                        checked>
+                                                    <span>Monthly</span>
+                                                </div>
+                                                <div class="form-check-custom">
+                                                    <input type="radio" name="period" class="form-check-input-custom">
+                                                    <span>Hourly</span>
+                                                </div>
+                                                <div class="form-check-custom">
+                                                    <input type="radio" name="period" class="form-check-input-custom">
+                                                    <span>Project Based</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label-custom">Benefits (Optional)</label>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-check-custom">
+                                                        <input type="checkbox" class="form-check-input-custom">
+                                                        <span>Health Insurance</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check-custom">
+                                                        <input type="checkbox" class="form-check-input-custom">
+                                                        <span>Paid Time Off</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check-custom">
+                                                        <input type="checkbox" class="form-check-input-custom">
+                                                        <span>Remote Work Options</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check-custom">
+                                                        <input type="checkbox" class="form-check-input-custom">
+                                                        <span>Learning Allowance</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <button type="button" class="btn btn-outline-secondary btn-custom"
+                                                onclick="nextStep(2)">Back</button>
+                                            <button type="button" class="btn btn-primary btn-custom"
+                                                onclick="nextStep(4)">Next: Preview</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Preview -->
+                            <div class="form-section" id="step4">
+                                <div class="card-custom mb-4">
+                                    <div class="card-header-custom d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Job Preview</h5>
+                                        <span class="badge badge-warning">Draft Mode</span>
+                                    </div>
+                                    <div class="card-body-custom">
+                                        <div class="d-flex align-items-start gap-3 mb-4">
+                                            <div class="avatar avatar-lg rounded-3">
+                                                <img src="https://ui-avatars.com/api/?name=Tech+Corp&background=1a7f5a&color=fff"
+                                                    alt="">
+                                            </div>
+                                            <div>
+                                                <h3 class="h4 mb-1">Senior Web Developer</h3>
+                                                <div class="text-muted mb-2">Tech Corp Solutions • Lahore, Pakistan
+                                                    (Hybrid)</div>
+                                                <div class="d-flex gap-2">
+                                                    <span class="badge badge-secondary">Full Time</span>
+                                                    <span class="badge badge-success">PKR 150k - 200k / Month</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr class="text-secondary opacity-25 my-4">
+
+                                        <h5 class="h6 fw-bold mb-3">Job Description</h5>
+                                        <p class="text-muted mb-4">
+                                            We are looking for an experienced Web Developer to join our team. You will
+                                            be responsible for building and maintaining robust web applications...
+                                        </p>
+
+                                        <h5 class="h6 fw-bold mb-3">Requirements</h5>
+                                        <ul class="text-muted mb-4">
+                                            <li>3+ years of experience with web technologies</li>
+                                            <li>Strong knowledge of HTML5, CSS3, and JavaScript</li>
+                                            <li>Experience with React or Vue.js</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-custom alert-info mb-4">
+                                    <i class="bi bi-info-circle-fill fs-5"></i>
+                                    <div>
+                                        <strong>Ready to post?</strong>
+                                        <div class="small opacity-75">Your job post will be reviewed by admin within 24
+                                            hours.</div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-outline-secondary btn-custom"
+                                        onclick="nextStep(3)">Back</button>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-outline-primary btn-custom">Save as
+                                            Draft</button>
+                                        <button type="button" class="btn btn-primary btn-custom">Post Job Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+
+        function nextStep(stepNumber) {
+            // Update preview if moving to step 4
+            if (stepNumber === 4) {
+                updatePreview();
+            }
+
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
+            // Show target section
+            document.getElementById('step' + stepNumber).classList.add('active');
+
+            // Update wizard indicators
+            document.querySelectorAll('.step-item').forEach(el => el.classList.remove('active', 'completed'));
+
+            for (let i = 1; i < stepNumber; i++) {
+                document.getElementById('step' + i + '-indicator').classList.add('completed');
+            }
+            document.getElementById('step' + stepNumber + '-indicator').classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Skills Input Logic
+        const skillsInput = document.querySelector('.tag-input');
+        const tagsContainer = document.querySelector('.tag-input-container');
+
+        skillsInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const skill = this.value.trim();
+                if (skill) {
+                    addSkill(skill);
+                    this.value = '';
+                }
+            }
+        });
+
+        // Add delete functionality to existing tags
+        document.querySelectorAll('.tag-input-badg i').forEach(icon => {
+            icon.addEventListener('click', function () {
+                this.parentElement.remove();
+            });
+        });
+
+        function addSkill(text) {
+            const tag = document.createElement('div');
+            tag.className = 'tag-input-badg';
+            tag.innerHTML = `${text} <i class="bi bi-x" onclick="this.parentElement.remove()"></i>`;
+            tagsContainer.insertBefore(tag, skillsInput);
+        }
+
+        function updatePreview() {
+            // Get values
+            const title = document.querySelector('input[placeholder="e.g. Senior Web Developer"]').value || "Job Title";
+            const type = document.querySelector('.form-select-custom').value;
+            const workplace = document.querySelectorAll('.form-select-custom')[1].value;
+            const description = document.querySelector('textarea').value || "No description provided.";
+
+            const salaryMin = document.querySelector('input[placeholder="Minimum"]').value;
+            const salaryMax = document.querySelector('input[placeholder="Maximum"]').value;
+            const salary = (salaryMin && salaryMax) ? `PKR ${salaryMin}k - ${salaryMax}k` : "Salary Negotiable";
+
+            // Collect Skills
+            const skills = [];
+            document.querySelectorAll('.tag-input-badg').forEach(tag => {
+                skills.push(tag.innerText.trim());
+            });
+
+            // Update DOM
+            const previewCard = document.querySelector('#step4 .card-body-custom');
+            previewCard.querySelector('h3').textContent = title;
+            previewCard.querySelector('.text-muted.mb-2').textContent = `Tech Corp Solutions • Lahore, Pakistan (${workplace})`;
+
+            // Update badges
+            const badges = previewCard.querySelectorAll('.badge');
+            badges[0].textContent = type;
+            badges[1].textContent = salary + ' / Month'; // Assuming monthly
+
+            // Update Description
+            const paragraphs = previewCard.querySelectorAll('p');
+            paragraphs[0].textContent = description;
+
+            // Update Skills/Requirements List
+            const ul = previewCard.querySelector('ul');
+            ul.innerHTML = '';
+            skills.forEach(skill => {
+                const li = document.createElement('li');
+                li.textContent = skill;
+                ul.appendChild(li);
+            });
+            if (skills.length === 0) {
+                ul.innerHTML = '<li>No specific skills listed.</li>';
+            }
+        }
+    </script>
+</body>
+
+</html>
