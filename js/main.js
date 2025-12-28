@@ -713,6 +713,110 @@ document.addEventListener('DOMContentLoaded', function() {
     initMatchScores();
 });
 
+// Profile Data Management
+let profileData = {
+    personalInfo: {
+        fullName: "Muhammad Khan",
+        title: "Web Developer Student",
+        email: "muhammad.khan@example.com",
+        phone: "+92 300 1234567",
+        dob: "January 15, 1998",
+        address: "123 Main Street, Lahore, Punjab",
+        city: "Lahore",
+        avatar: "MK",
+        verification: "TEVTA Verified"
+    },
+    stats: {
+        applications: 24,
+        jobsApplied: 8,
+        bookedHostels: 3,
+        matchScore: 95
+    },
+    education: [
+        {
+            id: 1,
+            degree: "DAE Electrical Engineering",
+            institution: "Government Technical Institute, Lahore",
+            dates: "2022 - 2024",
+            description: "Completed DAE in Electrical Engineering with distinction"
+        },
+        {
+            id: 2,
+            degree: "Intermediate (Pre-Engineering)",
+            institution: "Government College, Lahore",
+            dates: "2020 - 2022",
+            description: "Completed intermediate in pre-engineering"
+        },
+        {
+            id: 3,
+            degree: "Matriculation",
+            institution: "Government High School, Lahore",
+            dates: "2018 - 2020",
+            description: "Completed matriculation with science subjects"
+        }
+    ],
+    skills: [
+        { name: "HTML/CSS", level: 90 },
+        { name: "JavaScript", level: 85 },
+        { name: "React", level: 75 },
+        { name: "Node.js", level: 70 },
+        { name: "Database Management", level: 80 }
+    ],
+    experience: [
+        {
+            id: 1,
+            title: "Web Development Intern",
+            company: "TechCorp Solutions, Lahore",
+            dates: "Jan 2024 - Present",
+            description: "Working as a web development intern, building responsive websites and learning modern development practices."
+        },
+        {
+            id: 2,
+            title: "Freelance Web Developer",
+            company: "Self-employed",
+            dates: "Jun 2023 - Dec 2023",
+            description: "Developed multiple client websites using HTML, CSS, and JavaScript. Gained experience in responsive design and client communication."
+        },
+        {
+            id: 3,
+            title: "Part-time Tutor",
+            company: "Lahore Education Center",
+            dates: "Jan 2023 - May 2023",
+            description: "Taught programming basics to students and helped them with their technical projects."
+        }
+    ],
+    resume: {
+        name: "Muhammad_Khan_Resume.pdf",
+        uploaded: true
+    }
+};
+
+// Function to update profile data
+function updateProfileData(data) {
+    profileData = { ...profileData, ...data };
+    saveProfileData();
+    return profileData;
+}
+
+// Function to get profile data
+function getProfileData() {
+    return profileData;
+}
+
+// Function to save profile data to localStorage
+function saveProfileData() {
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+}
+
+// Function to load profile data from localStorage
+function loadProfileData() {
+    const savedData = localStorage.getItem('profileData');
+    if (savedData) {
+        profileData = JSON.parse(savedData);
+    }
+    return profileData;
+}
+
 // Export functions for global use
 window.showToast = showToast;
 window.togglePassword = togglePassword;
@@ -723,3 +827,9 @@ window.toggleSidebar = toggleSidebar;
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.copyToClipboard = copyToClipboard;
+
+// Profile management functions
+window.updateProfileData = updateProfileData;
+window.getProfileData = getProfileData;
+window.saveProfileData = saveProfileData;
+window.loadProfileData = loadProfileData;

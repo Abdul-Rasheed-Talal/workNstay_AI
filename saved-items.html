@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Saved Items - WorkNStay AI">
+    <title>Saved Items - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .saved-wrapper {
+            min-height: 100vh;
+        }
+
+        .saved-sidebar {
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            width: 260px;
+            transform: translateX(-100%);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .saved-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .saved-sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .saved-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .saved-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .saved-brand span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gray-900);
+        }
+
+        .saved-brand small {
+            display: block;
+            font-size: 10px;
+            color: var(--gray-500);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .saved-nav {
+            flex: 1;
+            padding: 20px 12px;
+            overflow-y: auto;
+        }
+
+        .saved-nav-section {
+            margin-bottom: 24px;
+        }
+
+        .saved-nav-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .saved-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .saved-nav-item:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .saved-nav-item.active {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .saved-nav-item i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .saved-nav-item .badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .saved-sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .saved-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .saved-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .saved-user-info {
+            flex: 1;
+        }
+
+        .saved-user-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 14px;
+        }
+
+        .saved-user-role {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+
+        .saved-main {
+            margin-left: 0;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .saved-topbar {
+            background: white;
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .saved-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .saved-page-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--gray-900);
+        }
+
+        .saved-page-title p {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        .saved-topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .saved-topbar-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .saved-topbar-btn:hover {
+            background: var(--gray-200);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--error);
+            border-radius: 50%;
+        }
+
+        .saved-content {
+            padding: 32px;
+        }
+
+        .saved-tabs {
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 24px;
+        }
+
+        .tab-item {
+            padding: 12px 24px;
+            font-weight: 500;
+            color: var(--gray-500);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-item:hover {
+            color: var(--gray-700);
+        }
+
+        .tab-item.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .saved-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 24px;
+        }
+
+        .job-card, .hostel-card {
+            padding: 24px;
+            border: 1px solid var(--gray-100);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .job-card:hover, .hostel-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .item-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn.apply {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn.book {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .action-btn.remove {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 64px 24px;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            color: var(--gray-300);
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            color: var(--gray-500);
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        @media (min-width: 992px) {
+            .saved-sidebar {
+                transform: translateX(0);
+            }
+
+            .saved-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .saved-main {
+                margin-left: 260px;
+            }
+
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="saved-wrapper">
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Saved Items Sidebar -->
+        <aside class="saved-sidebar" id="savedSidebar">
+            <div class="saved-sidebar-header">
+                <a href="index.html" class="saved-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <div>
+                        <span>WorkNStay AI</span>
+                        <small>Student Panel</small>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="saved-nav">
+                <div class="saved-nav-section">
+                    <div class="saved-nav-title">Navigation</div>
+                    <a href="profile.html" class="saved-nav-item">
+                        <i class="bi bi-person-fill"></i>
+                        Profile
+                    </a>
+                    <a href="edit-profile.html" class="saved-nav-item">
+                        <i class="bi bi-pencil-fill"></i>
+                        Edit Profile
+                    </a>
+                    <a href="settings.html" class="saved-nav-item">
+                        <i class="bi bi-gear-fill"></i>
+                        Settings
+                    </a>
+                </div>
+
+                <div class="saved-nav-section">
+                    <div class="saved-nav-title">Applications</div>
+                    <a href="my-applications.html" class="saved-nav-item">
+                        <i class="bi bi-file-earmark-text-fill"></i>
+                        My Applications
+                    </a>
+                    <a href="saved-items.html" class="saved-nav-item active">
+                        <i class="bi bi-bookmark-fill"></i>
+                        Saved Items
+                    </a>
+                </div>
+
+                <div class="saved-nav-section">
+                    <div class="saved-nav-title">Platform</div>
+                    <a href="jobs.html" class="saved-nav-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        Find Jobs
+                    </a>
+                    <a href="hostels.html" class="saved-nav-item">
+                        <i class="bi bi-house-door-fill"></i>
+                        Find Hostels
+                    </a>
+                </div>
+            </nav>
+
+            <div class="saved-sidebar-footer">
+                <div class="saved-user">
+                    <div class="saved-avatar">MK</div>
+                    <div class="saved-user-info">
+                        <div class="saved-user-name">Muhammad Khan</div>
+                        <div class="saved-user-role">TEVTA Student</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="saved-main">
+            <header class="saved-topbar">
+                <div class="saved-topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="saved-page-title">
+                        <h1>Saved Items</h1>
+                        <p>Your saved jobs and hostels</p>
+                    </div>
+                </div>
+
+                <div class="saved-topbar-right">
+                    <button class="saved-topbar-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button class="saved-topbar-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="saved-content">
+                <div class="container-fluid">
+                    <!-- Stats -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="stat-card">
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Saved Jobs</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="stat-card">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Saved Hostels</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="stat-card">
+                                <div class="stat-value">2</div>
+                                <div class="stat-label">Applied</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Saved Tabs -->
+                    <div class="saved-tabs d-flex flex-nowrap overflow-x-auto">
+                        <div class="tab-item active" onclick="switchTab('saved-jobs')">Saved Jobs</div>
+                        <div class="tab-item" onclick="switchTab('saved-hostels')">Saved Hostels</div>
+                    </div>
+
+                    <!-- Saved Jobs Tab -->
+                    <div class="tab-content active" id="saved-jobs">
+                        <div class="saved-section">
+                            <h2 class="section-title">Saved Jobs</h2>
+                            
+                            <!-- Job 1 -->
+                            <div class="job-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-briefcase"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">Web Development Intern</h5>
+                                            <p class="item-subtitle">TechCorp Solutions, Lahore</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 25,000 - 35,000</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-clock"></i>
+                                                    <span>Full-time</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-geo-alt"></i>
+                                                    <span>Lahore, Pakistan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn apply" onclick="applyToJob('Web Development Intern')">
+                                                <i class="bi bi-send"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedJob(this, 'Web Development Intern')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job 2 -->
+                            <div class="job-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-briefcase"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">Junior Software Developer</h5>
+                                            <p class="item-subtitle">InnovateLab, Karachi</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 40,000 - 50,000</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-clock"></i>
+                                                    <span>Full-time</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-geo-alt"></i>
+                                                    <span>Karachi, Pakistan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn apply" onclick="applyToJob('Junior Software Developer')">
+                                                <i class="bi bi-send"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedJob(this, 'Junior Software Developer')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job 3 -->
+                            <div class="job-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-briefcase"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">UI/UX Designer</h5>
+                                            <p class="item-subtitle">CreativeMinds, Islamabad</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 35,000 - 45,000</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-clock"></i>
+                                                    <span>Full-time</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-geo-alt"></i>
+                                                    <span>Islamabad, Pakistan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn apply" onclick="applyToJob('UI/UX Designer')">
+                                                <i class="bi bi-send"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedJob(this, 'UI/UX Designer')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job 4 -->
+                            <div class="job-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-briefcase"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">Data Entry Operator</h5>
+                                            <p class="item-subtitle">Global Services, Lahore</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 20,000 - 25,000</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-clock"></i>
+                                                    <span>Part-time</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-geo-alt"></i>
+                                                    <span>Lahore, Pakistan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn apply" onclick="applyToJob('Data Entry Operator')">
+                                                <i class="bi bi-send"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedJob(this, 'Data Entry Operator')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job 5 -->
+                            <div class="job-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-briefcase"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">Technical Support Specialist</h5>
+                                            <p class="item-subtitle">TechHelp, Rawalpindi</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 30,000 - 40,000</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-clock"></i>
+                                                    <span>Full-time</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-geo-alt"></i>
+                                                    <span>Rawalpindi, Pakistan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn apply" onclick="applyToJob('Technical Support Specialist')">
+                                                <i class="bi bi-send"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedJob(this, 'Technical Support Specialist')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Saved Hostels Tab -->
+                    <div class="tab-content" id="saved-hostels">
+                        <div class="saved-section">
+                            <h2 class="section-title">Saved Hostels</h2>
+                            
+                            <!-- Hostel 1 -->
+                            <div class="hostel-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-house-door"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">Green View Hostel</h5>
+                                            <p class="item-subtitle">Lahore, near GTI</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 8,000 - 12,000/month</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-star-fill" style="color: #f59e0b;"></i>
+                                                    <span>4.5 (128 reviews)</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-shield-check"></i>
+                                                    <span>Verified</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn book" onclick="bookHostel('Green View Hostel')">
+                                                <i class="bi bi-calendar-check"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedHostel(this, 'Green View Hostel')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hostel 2 -->
+                            <div class="hostel-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-house-door"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">Student Hub Lahore</h5>
+                                            <p class="item-subtitle">Lahore, near University</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 10,000 - 15,000/month</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-star-fill" style="color: #f59e0b;"></i>
+                                                    <span>4.2 (95 reviews)</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-shield-check"></i>
+                                                    <span>Verified</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn book" onclick="bookHostel('Student Hub Lahore')">
+                                                <i class="bi bi-calendar-check"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedHostel(this, 'Student Hub Lahore')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hostel 3 -->
+                            <div class="hostel-card">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            <i class="bi bi-house-door"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="item-info">
+                                            <h5 class="item-title">Comfort Inn Hostel</h5>
+                                            <p class="item-subtitle">Faisalabad, near GTI</p>
+                                            <div class="item-meta">
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                    <span>PKR 7,000 - 10,000/month</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-star-fill" style="color: #f59e0b;"></i>
+                                                    <span>4.0 (76 reviews)</span>
+                                                </div>
+                                                <div class="item-meta-item">
+                                                    <i class="bi bi-shield-check"></i>
+                                                    <span>Verified</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="item-actions d-flex justify-content-end">
+                                            <button class="action-btn book" onclick="bookHostel('Comfort Inn Hostel')">
+                                                <i class="bi bi-calendar-check"></i>
+                                            </button>
+                                            <button class="action-btn remove" onclick="removeSavedHostel(this, 'Comfort Inn Hostel')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('savedSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab and corresponding content
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function applyToJob(jobTitle) {
+            showToast('Success!', `Application sent to ${jobTitle}`, 'success');
+        }
+
+        function bookHostel(hostelName) {
+            showToast('Success!', `Booking request sent to ${hostelName}`, 'success');
+        }
+
+        function removeSavedJob(element, jobTitle) {
+            if (confirm(`Are you sure you want to remove ${jobTitle} from your saved jobs?`)) {
+                element.closest('.job-card').remove();
+                showToast('Removed', `${jobTitle} removed from saved jobs`, 'info');
+            }
+        }
+
+        function removeSavedHostel(element, hostelName) {
+            if (confirm(`Are you sure you want to remove ${hostelName} from your saved hostels?`)) {
+                element.closest('.hostel-card').remove();
+                showToast('Removed', `${hostelName} removed from saved hostels`, 'info');
+            }
+        }
+    </script>
+</body>
+
+</html>

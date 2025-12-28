@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Edit Profile - WorkNStay AI">
+    <title>Edit Profile - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .edit-profile-wrapper {
+            min-height: 100vh;
+        }
+
+        .edit-profile-sidebar {
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            width: 260px;
+            transform: translateX(-100%);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .edit-profile-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .edit-profile-sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .edit-profile-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .edit-profile-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .edit-profile-brand span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gray-900);
+        }
+
+        .edit-profile-brand small {
+            display: block;
+            font-size: 10px;
+            color: var(--gray-500);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .edit-profile-nav {
+            flex: 1;
+            padding: 20px 12px;
+            overflow-y: auto;
+        }
+
+        .edit-profile-nav-section {
+            margin-bottom: 24px;
+        }
+
+        .edit-profile-nav-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .edit-profile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .edit-profile-nav-item:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .edit-profile-nav-item.active {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .edit-profile-nav-item i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .edit-profile-nav-item .badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .edit-profile-sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .edit-profile-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .edit-profile-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .edit-profile-user-info {
+            flex: 1;
+        }
+
+        .edit-profile-user-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 14px;
+        }
+
+        .edit-profile-user-role {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+
+        .edit-profile-main {
+            margin-left: 0;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .edit-profile-topbar {
+            background: white;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .edit-profile-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .edit-profile-page-title h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--gray-900);
+        }
+
+        .edit-profile-page-title p {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        .edit-profile-topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .edit-profile-topbar-right .btn-custom {
+            display: none;
+        }
+        
+        @media (min-width: 576px) {
+            .edit-profile-topbar-right {
+                gap: 12px;
+            }
+            
+            .edit-profile-topbar-right .btn-custom {
+                display: inline-flex;
+            }
+        }
+
+        .edit-profile-topbar-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .edit-profile-topbar-btn:hover {
+            background: var(--gray-200);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--error);
+            border-radius: 50%;
+        }
+
+        .edit-profile-content {
+            padding: 20px;
+        }
+
+        .profile-tabs {
+            display: flex;
+            overflow-x: auto;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 24px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .profile-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-item {
+            padding: 12px 20px;
+            font-weight: 500;
+            color: var(--gray-500);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-item:hover {
+            color: var(--gray-700);
+        }
+
+        .tab-item.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .avatar-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            justify-content: center;
+        }
+
+        .avatar-btn.upload {
+            background: var(--primary);
+            color: white;
+        }
+
+        .avatar-btn.remove {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .avatar-btn:hover {
+            opacity: 0.9;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .social-link-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-direction: column;
+        }
+
+        .social-link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .social-link-icon.facebook {
+            background: #3b5998;
+        }
+
+        .social-link-icon.twitter {
+            background: #1da1f2;
+        }
+
+        .social-link-icon.linkedin {
+            background: #0077b5;
+        }
+
+        .social-link-icon.github {
+            background: #333;
+        }
+
+        .social-link-input {
+            flex: 1;
+            width: 100%;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .skill-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--primary-light);
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .skill-chip i {
+            cursor: pointer;
+        }
+
+        .add-skill-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .add-skill-input {
+            flex: 1;
+        }
+
+        .education-item, .experience-item {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .education-item:last-child, .experience-item:last-child {
+            border-bottom: none;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .form-actions .btn-custom {
+            width: 100%;
+        }
+
+        @media (min-width: 576px) {
+            .form-grid {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .form-grid > div {
+                flex: 1 1 100%;
+            }
+            
+            .social-link-item {
+                flex-direction: row;
+                text-align: left;
+            }
+            
+            .social-link-input {
+                width: auto;
+            }
+            
+            .form-actions {
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+            
+            .form-actions .btn-custom {
+                width: auto;
+            }
+            
+            .add-skill-form {
+                flex-direction: row;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .edit-profile-topbar {
+                padding: 16px 32px;
+            }
+            
+            .edit-profile-page-title h1 {
+                font-size: 1.5rem;
+            }
+            
+            .edit-profile-page-title p {
+                font-size: 14px;
+            }
+            
+            .edit-profile-content {
+                padding: 32px;
+            }
+            
+            .avatar-upload {
+                flex-direction: row;
+                text-align: left;
+            }
+            
+            .avatar-actions {
+                width: auto;
+                max-width: none;
+                flex-direction: row;
+            }
+            
+            .profile-tabs {
+                overflow-x: visible;
+            }
+            
+            .tab-item {
+                padding: 12px 24px;
+            }
+            
+            .form-grid > div {
+                flex: 1 1 calc(50% - 12px);
+            }
+            
+            .education-item, .experience-item {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .form-actions {
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+            
+            .edit-profile-main {
+                margin-left: 260px;
+            }
+            
+            .edit-profile-sidebar {
+                width: 260px;
+                transform: translateX(0);
+            }
+            
+            .edit-profile-sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .form-grid > div {
+                flex: 1 1 calc(50% - 12px);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .form-grid > div {
+                flex: 1 1 calc(50% - 12px);
+            }
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+        
+        /* Mobile first adjustments */
+        .col-12, .col-md-6 {
+            width: 100%;
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 auto;
+                width: 50%;
+                max-width: 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="edit-profile-wrapper">
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Edit Profile Sidebar -->
+        <aside class="edit-profile-sidebar" id="editProfileSidebar">
+            <div class="edit-profile-sidebar-header">
+                <a href="index.html" class="edit-profile-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <div>
+                        <span>WorkNStay AI</span>
+                        <small>Student Panel</small>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="edit-profile-nav">
+                <div class="edit-profile-nav-section">
+                    <div class="edit-profile-nav-title">Navigation</div>
+                    <a href="profile.html" class="edit-profile-nav-item">
+                        <i class="bi bi-person-fill"></i>
+                        Profile
+                    </a>
+                    <a href="edit-profile.html" class="edit-profile-nav-item active">
+                        <i class="bi bi-pencil-fill"></i>
+                        Edit Profile
+                    </a>
+                    <a href="settings.html" class="edit-profile-nav-item">
+                        <i class="bi bi-gear-fill"></i>
+                        Settings
+                    </a>
+                </div>
+
+                <div class="edit-profile-nav-section">
+                    <div class="edit-profile-nav-title">Applications</div>
+                    <a href="my-applications.html" class="edit-profile-nav-item">
+                        <i class="bi bi-file-earmark-text-fill"></i>
+                        My Applications
+                    </a>
+                    <a href="saved-items.html" class="edit-profile-nav-item">
+                        <i class="bi bi-bookmark-fill"></i>
+                        Saved Items
+                    </a>
+                </div>
+
+                <div class="edit-profile-nav-section">
+                    <div class="edit-profile-nav-title">Platform</div>
+                    <a href="jobs.html" class="edit-profile-nav-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        Find Jobs
+                    </a>
+                    <a href="hostels.html" class="edit-profile-nav-item">
+                        <i class="bi bi-house-door-fill"></i>
+                        Find Hostels
+                    </a>
+                </div>
+            </nav>
+
+            <div class="edit-profile-sidebar-footer">
+                <div class="edit-profile-user">
+                    <div class="edit-profile-avatar">MK</div>
+                    <div class="edit-profile-user-info">
+                        <div class="edit-profile-user-name">Muhammad Khan</div>
+                        <div class="edit-profile-user-role">TEVTA Student</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="edit-profile-main">
+            <header class="edit-profile-topbar">
+                <div class="edit-profile-topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="edit-profile-page-title">
+                        <h1>Edit Profile</h1>
+                        <p>Update your personal information and preferences</p>
+                    </div>
+                </div>
+
+                <div class="edit-profile-topbar-right">
+                    <button class="edit-profile-topbar-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button class="edit-profile-topbar-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <a href="profile.html" class="btn-custom btn-ghost">
+                        <i class="bi bi-x"></i>
+                        Cancel
+                    </a>
+                </div>
+            </header>
+
+            <div class="edit-profile-content">
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <div class="tab-item active" onclick="switchTab('personal')">Personal Info</div>
+                    <div class="tab-item" onclick="switchTab('education')">Education</div>
+                    <div class="tab-item" onclick="switchTab('experience')">Experience</div>
+                    <div class="tab-item" onclick="switchTab('skills')">Skills</div>
+                    <div class="tab-item" onclick="switchTab('social')">Social Links</div>
+                </div>
+
+                <!-- Personal Info Tab -->
+                <div class="tab-content active" id="personal">
+                    <div class="profile-card">
+                        <h3 class="mb-4">Personal Information</h3>
+                        
+                        <!-- Avatar Upload -->
+                        <div class="avatar-upload">
+                            <div class="avatar-preview">
+                                MK
+                            </div>
+                            <div class="avatar-actions">
+                                <label class="avatar-btn upload" for="avatarUpload">
+                                    <i class="bi bi-upload"></i>
+                                    Upload Photo
+                                </label>
+                                <input type="file" id="avatarUpload" style="display: none;" accept="image/*" onchange="handleAvatarUpload(this)">
+                                <button class="avatar-btn remove" onclick="removeAvatar()">
+                                    <i class="bi bi-trash"></i>
+                                    Remove Photo
+                                </button>
+                            </div>
+                        </div>
+
+                        <form id="personalInfoForm">
+                            <div class="form-grid">
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">First Name</label>
+                                        <input type="text" class="form-control-custom" value="Muhammad">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">Last Name</label>
+                                        <input type="text" class="form-control-custom" value="Khan">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">Email Address</label>
+                                        <input type="email" class="form-control-custom" value="muhammad.khan@example.com">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">Phone Number</label>
+                                        <input type="tel" class="form-control-custom" value="+92 300 1234567">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">Date of Birth</label>
+                                        <input type="date" class="form-control-custom" value="1998-01-15">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">Gender</label>
+                                        <select class="form-control-custom form-select-custom">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">Address</label>
+                                        <input type="text" class="form-control-custom" value="123 Main Street">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">City</label>
+                                        <input type="text" class="form-control-custom" value="Lahore">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">Country</label>
+                                        <input type="text" class="form-control-custom" value="Pakistan">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom">CNIC Number</label>
+                                        <input type="text" class="form-control-custom" placeholder="12345-1234567-8" value="12345-1234567-8">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-custom btn-primary">
+                                    <i class="bi bi-check"></i>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Education Tab -->
+                <div class="tab-content" id="education">
+                    <div class="profile-card">
+                        <h3 class="mb-4">Education Details</h3>
+                        
+                        <form id="educationForm">
+                            <div class="education-item">
+                                <div class="form-grid">
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Degree/Certificate</label>
+                                            <input type="text" class="form-control-custom" value="DAE Electrical Engineering">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Institution</label>
+                                            <input type="text" class="form-control-custom" value="Government Technical Institute, Lahore">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Start Date</label>
+                                            <input type="date" class="form-control-custom" value="2022-01-01">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">End Date</label>
+                                            <input type="date" class="form-control-custom" value="2024-01-01">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Description</label>
+                                            <textarea class="form-control-custom" rows="3">Completed DAE in Electrical Engineering with distinction</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="education-item">
+                                <div class="form-grid">
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Degree/Certificate</label>
+                                            <input type="text" class="form-control-custom" value="Intermediate (Pre-Engineering)">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Institution</label>
+                                            <input type="text" class="form-control-custom" value="Government College, Lahore">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Start Date</label>
+                                            <input type="date" class="form-control-custom" value="2020-01-01">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">End Date</label>
+                                            <input type="date" class="form-control-custom" value="2022-01-01">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Description</label>
+                                            <textarea class="form-control-custom" rows="3">Completed intermediate in pre-engineering</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn-custom btn-outline-primary" onclick="addEducation()">
+                                <i class="bi bi-plus"></i>
+                                Add Education
+                            </button>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-custom btn-primary">
+                                    <i class="bi bi-check"></i>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Experience Tab -->
+                <div class="tab-content" id="experience">
+                    <div class="profile-card">
+                        <h3 class="mb-4">Work Experience</h3>
+                        
+                        <form id="experienceForm">
+                            <div class="experience-item">
+                                <div class="form-grid">
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Job Title</label>
+                                            <input type="text" class="form-control-custom" value="Web Development Intern">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Company</label>
+                                            <input type="text" class="form-control-custom" value="TechCorp Solutions">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Start Date</label>
+                                            <input type="date" class="form-control-custom" value="2024-01-01">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">End Date</label>
+                                            <input type="date" class="form-control-custom" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Description</label>
+                                            <textarea class="form-control-custom" rows="3">Working as a web development intern, building responsive websites and learning modern development practices.</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="experience-item">
+                                <div class="form-grid">
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Job Title</label>
+                                            <input type="text" class="form-control-custom" value="Freelance Web Developer">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Company</label>
+                                            <input type="text" class="form-control-custom" value="Self-employed">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Start Date</label>
+                                            <input type="date" class="form-control-custom" value="2023-06-01">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">End Date</label>
+                                            <input type="date" class="form-control-custom" value="2023-12-31">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group-custom">
+                                            <label class="form-label-custom">Description</label>
+                                            <textarea class="form-control-custom" rows="3">Developed multiple client websites using HTML, CSS, and JavaScript. Gained experience in responsive design and client communication.</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn-custom btn-outline-primary" onclick="addExperience()">
+                                <i class="bi bi-plus"></i>
+                                Add Experience
+                            </button>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-custom btn-primary">
+                                    <i class="bi bi-check"></i>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Skills Tab -->
+                <div class="tab-content" id="skills">
+                    <div class="profile-card">
+                        <h3 class="mb-4">Skills & Expertise</h3>
+                        
+                        <form id="skillsForm">
+                            <div class="skills-container">
+                                <div class="skill-chip">
+                                    HTML/CSS
+                                    <i class="bi bi-x" onclick="removeSkill(this)"></i>
+                                </div>
+                                <div class="skill-chip">
+                                    JavaScript
+                                    <i class="bi bi-x" onclick="removeSkill(this)"></i>
+                                </div>
+                                <div class="skill-chip">
+                                    React
+                                    <i class="bi bi-x" onclick="removeSkill(this)"></i>
+                                </div>
+                                <div class="skill-chip">
+                                    Node.js
+                                    <i class="bi bi-x" onclick="removeSkill(this)"></i>
+                                </div>
+                                <div class="skill-chip">
+                                    Database Management
+                                    <i class="bi bi-x" onclick="removeSkill(this)"></i>
+                                </div>
+                            </div>
+
+                            <div class="add-skill-form">
+                                <input type="text" class="form-control-custom add-skill-input" placeholder="Add a new skill...">
+                                <button type="button" class="btn-custom btn-primary" onclick="addSkill()">
+                                    <i class="bi bi-plus"></i>
+                                    Add
+                                </button>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-custom btn-primary">
+                                    <i class="bi bi-check"></i>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Social Links Tab -->
+                <div class="tab-content" id="social">
+                    <div class="profile-card">
+                        <h3 class="mb-4">Social Links</h3>
+                        
+                        <form id="socialForm">
+                            <div class="social-links">
+                                <div class="social-link-item">
+                                    <div class="social-link-icon facebook">
+                                        <i class="bi bi-facebook"></i>
+                                    </div>
+                                    <input type="url" class="form-control-custom social-link-input" placeholder="https://facebook.com/username" value="https://facebook.com/muhammad.khan">
+                                </div>
+                                <div class="social-link-item">
+                                    <div class="social-link-icon twitter">
+                                        <i class="bi bi-twitter-x"></i>
+                                    </div>
+                                    <input type="url" class="form-control-custom social-link-input" placeholder="https://twitter.com/username" value="https://twitter.com/muhammad.khan">
+                                </div>
+                                <div class="social-link-item">
+                                    <div class="social-link-icon linkedin">
+                                        <i class="bi bi-linkedin"></i>
+                                    </div>
+                                    <input type="url" class="form-control-custom social-link-input" placeholder="https://linkedin.com/in/username" value="https://linkedin.com/in/muhammad.khan">
+                                </div>
+                                <div class="social-link-item">
+                                    <div class="social-link-icon github">
+                                        <i class="bi bi-github"></i>
+                                    </div>
+                                    <input type="url" class="form-control-custom social-link-input" placeholder="https://github.com/username" value="https://github.com/muhammad.khan">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-custom btn-primary">
+                                    <i class="bi bi-check"></i>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('editProfileSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab and corresponding content
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function handleAvatarUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('.avatar-preview').innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeAvatar() {
+            if (confirm('Are you sure you want to remove your avatar?')) {
+                document.querySelector('.avatar-preview').innerHTML = 'MK';
+                document.getElementById('avatarUpload').value = '';
+            }
+        }
+
+        function addEducation() {
+            const educationForm = document.getElementById('educationForm');
+            const newEducation = document.createElement('div');
+            newEducation.className = 'education-item';
+            newEducation.innerHTML = `
+                <div class="form-grid">
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Degree/Certificate</label>
+                            <input type="text" class="form-control-custom" placeholder="Enter degree">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Institution</label>
+                            <input type="text" class="form-control-custom" placeholder="Enter institution">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Start Date</label>
+                            <input type="date" class="form-control-custom">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">End Date</label>
+                            <input type="date" class="form-control-custom">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Description</label>
+                            <textarea class="form-control-custom" rows="3" placeholder="Enter description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+            educationForm.insertBefore(newEducation, educationForm.lastElementChild.previousElementSibling);
+        }
+
+        function addExperience() {
+            const experienceForm = document.getElementById('experienceForm');
+            const newExperience = document.createElement('div');
+            newExperience.className = 'experience-item';
+            newExperience.innerHTML = `
+                <div class="form-grid">
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Job Title</label>
+                            <input type="text" class="form-control-custom" placeholder="Enter job title">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Company</label>
+                            <input type="text" class="form-control-custom" placeholder="Enter company">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Start Date</label>
+                            <input type="date" class="form-control-custom">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">End Date</label>
+                            <input type="date" class="form-control-custom">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Description</label>
+                            <textarea class="form-control-custom" rows="3" placeholder="Enter description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+            experienceForm.insertBefore(newExperience, experienceForm.lastElementChild.previousElementSibling);
+        }
+
+        function addSkill() {
+            const skillInput = document.querySelector('.add-skill-input');
+            const skillName = skillInput.value.trim();
+            if (skillName) {
+                const skillsContainer = document.querySelector('.skills-container');
+                const skillChip = document.createElement('div');
+                skillChip.className = 'skill-chip';
+                skillChip.innerHTML = `${skillName} <i class="bi bi-x" onclick="removeSkill(this)"></i>`;
+                skillsContainer.appendChild(skillChip);
+                skillInput.value = '';
+            }
+        }
+
+        function removeSkill(element) {
+            element.parentElement.remove();
+        }
+
+        // Form submission handlers
+        document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('Success!', 'Personal information updated successfully', 'success');
+        });
+
+        document.getElementById('educationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('Success!', 'Education information updated successfully', 'success');
+        });
+
+        document.getElementById('experienceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('Success!', 'Experience information updated successfully', 'success');
+        });
+
+        document.getElementById('skillsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('Success!', 'Skills updated successfully', 'success');
+        });
+
+        document.getElementById('socialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('Success!', 'Social links updated successfully', 'success');
+        });
+    </script>
+</body>
+
+</html>

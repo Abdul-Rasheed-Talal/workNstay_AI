@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Settings - WorkNStay AI">
+    <title>Settings - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .settings-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .settings-sidebar {
+            width: 260px;
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+        }
+        
+        .settings-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .settings-sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .settings-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .settings-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .settings-brand span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gray-900);
+        }
+
+        .settings-brand small {
+            display: block;
+            font-size: 10px;
+            color: var(--gray-500);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-nav {
+            flex: 1;
+            padding: 20px 12px;
+            overflow-y: auto;
+        }
+
+        .settings-nav-section {
+            margin-bottom: 24px;
+        }
+
+        .settings-nav-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .settings-nav-item:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .settings-nav-item.active {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .settings-nav-item i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .settings-nav-item .badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .settings-sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .settings-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .settings-user-info {
+            flex: 1;
+        }
+
+        .settings-user-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 14px;
+        }
+
+        .settings-user-role {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+
+        .settings-main {
+            flex: 1;
+            margin-left: 0;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .settings-topbar {
+            background: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .settings-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .settings-page-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--gray-900);
+        }
+
+        .settings-page-title p {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        .settings-topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-topbar-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .settings-topbar-btn:hover {
+            background: var(--gray-200);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--error);
+            border-radius: 50%;
+        }
+
+        .settings-content {
+            padding: 32px;
+        }
+
+        .settings-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 24px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-title {
+            font-weight: 500;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .setting-description {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray-300);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .password-change-form {
+            max-width: 500px;
+        }
+
+        .delete-account-section {
+            border: 2px solid var(--error-light);
+            border-radius: 16px;
+            padding: 32px;
+            background: var(--error-light);
+        }
+
+        .delete-account-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--error);
+            margin-bottom: 8px;
+        }
+
+        .delete-account-description {
+            color: var(--gray-600);
+            margin-bottom: 16px;
+        }
+
+        .delete-account-warning {
+            background: var(--warning-light);
+            border-left: 4px solid var(--warning);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .delete-account-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (min-width: 992px) {
+            .settings-sidebar {
+                transform: translateX(0);
+            }
+
+            .settings-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .settings-main {
+                margin-left: 260px;
+            }
+
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .settings-content {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .setting-control {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .delete-account-actions {
+                flex-direction: column;
+            }
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="settings-wrapper">
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Settings Sidebar -->
+        <aside class="settings-sidebar" id="settingsSidebar">
+            <div class="settings-sidebar-header">
+                <a href="index.html" class="settings-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <div>
+                        <span>WorkNStay AI</span>
+                        <small>Student Panel</small>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="settings-nav">
+                <div class="settings-nav-section">
+                    <div class="settings-nav-title">Navigation</div>
+                    <a href="profile.html" class="settings-nav-item">
+                        <i class="bi bi-person-fill"></i>
+                        Profile
+                    </a>
+                    <a href="edit-profile.html" class="settings-nav-item">
+                        <i class="bi bi-pencil-fill"></i>
+                        Edit Profile
+                    </a>
+                    <a href="settings.html" class="settings-nav-item active">
+                        <i class="bi bi-gear-fill"></i>
+                        Settings
+                    </a>
+                </div>
+
+                <div class="settings-nav-section">
+                    <div class="settings-nav-title">Applications</div>
+                    <a href="my-applications.html" class="settings-nav-item">
+                        <i class="bi bi-file-earmark-text-fill"></i>
+                        My Applications
+                    </a>
+                    <a href="saved-items.html" class="settings-nav-item">
+                        <i class="bi bi-bookmark-fill"></i>
+                        Saved Items
+                    </a>
+                </div>
+
+                <div class="settings-nav-section">
+                    <div class="settings-nav-title">Platform</div>
+                    <a href="jobs.html" class="settings-nav-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        Find Jobs
+                    </a>
+                    <a href="hostels.html" class="settings-nav-item">
+                        <i class="bi bi-house-door-fill"></i>
+                        Find Hostels
+                    </a>
+                </div>
+            </nav>
+
+            <div class="settings-sidebar-footer">
+                <div class="settings-user">
+                    <div class="settings-avatar">MK</div>
+                    <div class="settings-user-info">
+                        <div class="settings-user-name">Muhammad Khan</div>
+                        <div class="settings-user-role">TEVTA Student</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="settings-main">
+            <header class="settings-topbar">
+                <div class="settings-topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="settings-page-title">
+                        <h1>Settings</h1>
+                        <p>Manage your account preferences and privacy</p>
+                    </div>
+                </div>
+
+                <div class="settings-topbar-right">
+                    <button class="settings-topbar-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button class="settings-topbar-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="settings-content">
+                <!-- Account Settings -->
+                <div class="settings-section">
+                    <h2 class="section-title">Account Settings</h2>
+                    
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Email Notifications</h5>
+                            <p class="setting-description mb-0">Receive email notifications for important updates</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">SMS Notifications</h5>
+                            <p class="setting-description mb-0">Receive SMS notifications for job applications</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Push Notifications</h5>
+                            <p class="setting-description mb-0">Receive push notifications on your device</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Profile Visibility</h5>
+                            <p class="setting-description mb-0">Make your profile visible to employers</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Location Services</h5>
+                            <p class="setting-description mb-0">Allow location-based job and hostel recommendations</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Preferences -->
+                <div class="settings-section">
+                    <h2 class="section-title">Notification Preferences</h2>
+                    
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Job Alerts</h5>
+                            <p class="setting-description mb-0">Receive alerts for new jobs matching your profile</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Application Updates</h5>
+                            <p class="setting-description mb-0">Get updates on your job applications</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Hostel Recommendations</h5>
+                            <p class="setting-description mb-0">Receive alerts for new hostels near your location</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Promotional Emails</h5>
+                            <p class="setting-description mb-0">Receive promotional emails and offers</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="settings-section">
+                    <h2 class="section-title">Privacy Settings</h2>
+                    
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Profile Visibility</h5>
+                            <p class="setting-description mb-0">Who can see your profile information</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="form-control-custom form-select-custom">
+                                <option>Everyone</option>
+                                <option>Only Verified Employers</option>
+                                <option>Connections Only</option>
+                                <option>Private</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Contact Information</h5>
+                            <p class="setting-description mb-0">Who can see your contact details</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="form-control-custom form-select-custom">
+                                <option>Everyone</option>
+                                <option>Only Verified Employers</option>
+                                <option>Connections Only</option>
+                                <option>Private</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item p-3 border-bottom">
+                        <div class="setting-info">
+                            <h5 class="setting-title mb-1">Search Visibility</h5>
+                            <p class="setting-description mb-0">Appear in search results</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Change -->
+                <div class="settings-section">
+                    <h2 class="section-title">Password & Security</h2>
+                    
+                    <form class="password-change-form">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Current Password</label>
+                            <input type="password" class="form-control-custom" placeholder="Enter current password">
+                        </div>
+                        
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">New Password</label>
+                            <input type="password" class="form-control-custom" placeholder="Enter new password">
+                        </div>
+                        
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Confirm New Password</label>
+                            <input type="password" class="form-control-custom" placeholder="Confirm new password">
+                        </div>
+                        
+                        <button type="submit" class="btn-custom btn-primary">
+                            <i class="bi bi-shield-lock"></i>
+                            Update Password
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Delete Account -->
+                <div class="delete-account-section">
+                    <h2 class="delete-account-title">Delete Account</h2>
+                    <p class="delete-account-description">Permanently delete your account and all associated data. This action cannot be undone.</p>
+                    
+                    <div class="delete-account-warning">
+                        <h5><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Warning</h5>
+                        <p class="mb-0">Deleting your account will remove all your profile information, job applications, saved items, and preferences. You will no longer be able to access your account or recover your data.</p>
+                    </div>
+                    
+                    <div class="delete-account-actions">
+                        <button class="btn-custom btn-danger">
+                            <i class="bi bi-trash"></i>
+                            Delete Account
+                        </button>
+                        <button class="btn-custom btn-ghost" onclick="showDeleteConfirmation()">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('settingsSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function showDeleteConfirmation() {
+            showToast('Delete Account', 'Are you sure you want to delete your account? This action cannot be undone.', 'warning');
+        }
+
+        // Form submission for password change
+        document.querySelector('.password-change-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = this.querySelector('input[type="password"]:first-child').value;
+            const newPassword = this.querySelector('input[type="password"]:nth-child(2)').value;
+            const confirmPassword = this.querySelector('input[type="password"]:nth-child(3)').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showToast('Error', 'Please fill in all password fields', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showToast('Error', 'New passwords do not match', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                showToast('Error', 'Password must be at least 8 characters', 'error');
+                return;
+            }
+            
+            // Simulate password update
+            showToast('Success!', 'Password updated successfully', 'success');
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Toggle switch functionality
+        document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const settingTitle = this.closest('.setting-item').querySelector('.setting-title').textContent;
+                const status = this.checked ? 'enabled' : 'disabled';
+                showToast('Settings Updated', `${settingTitle} has been ${status}`, 'info');
+            });
+        });
+    </script>
+</body>
+
+</html>

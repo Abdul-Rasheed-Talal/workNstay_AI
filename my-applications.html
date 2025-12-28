@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="My Applications - WorkNStay AI">
+    <title>My Applications - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .applications-wrapper {
+            min-height: 100vh;
+        }
+
+        .applications-sidebar {
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            width: 260px;
+            transform: translateX(-100%);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .applications-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .applications-sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .applications-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .applications-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .applications-brand span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gray-900);
+        }
+
+        .applications-brand small {
+            display: block;
+            font-size: 10px;
+            color: var(--gray-500);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .applications-nav {
+            flex: 1;
+            padding: 20px 12px;
+            overflow-y: auto;
+        }
+
+        .applications-nav-section {
+            margin-bottom: 24px;
+        }
+
+        .applications-nav-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .applications-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .applications-nav-item:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .applications-nav-item.active {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .applications-nav-item i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .applications-nav-item .badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .applications-sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .applications-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .applications-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .applications-user-info {
+            flex: 1;
+        }
+
+        .applications-user-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 14px;
+        }
+
+        .applications-user-role {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+
+        .applications-main {
+            margin-left: 0;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .applications-topbar {
+            background: white;
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .applications-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .applications-page-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--gray-900);
+        }
+
+        .applications-page-title p {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        .applications-topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .applications-topbar-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .applications-topbar-btn:hover {
+            background: var(--gray-200);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--error);
+            border-radius: 50%;
+        }
+
+        .applications-content {
+            padding: 32px;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .application-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-card);
+            border-left: 4px solid var(--primary);
+            transition: all 0.2s;
+        }
+
+        .application-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .application-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .application-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 1.1rem;
+        }
+
+        .application-company {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .application-date {
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+
+        .application-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .status-reviewed {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .status-shortlisted {
+            background: var(--accent-purple);
+            color: white;
+        }
+
+        .status-rejected {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .status-offered {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .application-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .application-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .action-btn.view {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .action-btn.withdraw {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+            margin-top: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gray-200);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+            padding-left: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .timeline-content {
+            background: var(--gray-50);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .timeline-subtitle {
+            font-size: 14px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 64px 24px;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            color: var(--gray-300);
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            color: var(--gray-500);
+            margin-bottom: 24px;
+        }
+
+        .application-stats {
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        @media (min-width: 992px) {
+            .applications-sidebar {
+                transform: translateX(0);
+            }
+
+            .applications-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .applications-main {
+                margin-left: 260px;
+            }
+
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="applications-wrapper">
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Applications Sidebar -->
+        <aside class="applications-sidebar" id="applicationsSidebar">
+            <div class="applications-sidebar-header">
+                <a href="index.html" class="applications-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <div>
+                        <span>WorkNStay AI</span>
+                        <small>Student Panel</small>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="applications-nav">
+                <div class="applications-nav-section">
+                    <div class="applications-nav-title">Navigation</div>
+                    <a href="profile.html" class="applications-nav-item">
+                        <i class="bi bi-person-fill"></i>
+                        Profile
+                    </a>
+                    <a href="edit-profile.html" class="applications-nav-item">
+                        <i class="bi bi-pencil-fill"></i>
+                        Edit Profile
+                    </a>
+                    <a href="settings.html" class="applications-nav-item">
+                        <i class="bi bi-gear-fill"></i>
+                        Settings
+                    </a>
+                </div>
+
+                <div class="applications-nav-section">
+                    <div class="applications-nav-title">Applications</div>
+                    <a href="my-applications.html" class="applications-nav-item active">
+                        <i class="bi bi-file-earmark-text-fill"></i>
+                        My Applications
+                    </a>
+                    <a href="saved-items.html" class="applications-nav-item">
+                        <i class="bi bi-bookmark-fill"></i>
+                        Saved Items
+                    </a>
+                </div>
+
+                <div class="applications-nav-section">
+                    <div class="applications-nav-title">Platform</div>
+                    <a href="jobs.html" class="applications-nav-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        Find Jobs
+                    </a>
+                    <a href="hostels.html" class="applications-nav-item">
+                        <i class="bi bi-house-door-fill"></i>
+                        Find Hostels
+                    </a>
+                </div>
+            </nav>
+
+            <div class="applications-sidebar-footer">
+                <div class="applications-user">
+                    <div class="applications-avatar">MK</div>
+                    <div class="applications-user-info">
+                        <div class="applications-user-name">Muhammad Khan</div>
+                        <div class="applications-user-role">TEVTA Student</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="applications-main">
+            <header class="applications-topbar">
+                <div class="applications-topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="applications-page-title">
+                        <h1>My Applications</h1>
+                        <p>Track the status of your job applications</p>
+                    </div>
+                </div>
+
+                <div class="applications-topbar-right">
+                    <button class="applications-topbar-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button class="applications-topbar-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="applications-content">
+                <div class="container-fluid">
+                    <!-- Stats -->
+                    <div class="row g-4 application-stats mb-4">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="stat-card">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Total Applied</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="stat-card">
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Under Review</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="stat-card">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Shortlisted</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="stat-card">
+                                <div class="stat-value">2</div>
+                                <div class="stat-label">Offered</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <h3>Filter Applications</h3>
+                        </div>
+                        <div class="filter-controls d-flex flex-wrap gap-2">
+                            <button class="filter-btn active" onclick="filterApplications('all')">All</button>
+                            <button class="filter-btn" onclick="filterApplications('pending')">Pending</button>
+                            <button class="filter-btn" onclick="filterApplications('reviewed')">Reviewed</button>
+                            <button class="filter-btn" onclick="filterApplications('shortlisted')">Shortlisted</button>
+                            <button class="filter-btn" onclick="filterApplications('rejected')">Rejected</button>
+                            <button class="filter-btn" onclick="filterApplications('offered')">Offered</button>
+                        </div>
+                    </div>
+
+                    <!-- Application 1 -->
+                    <div class="application-card" data-status="shortlisted">
+                        <div class="application-header">
+                            <div>
+                                <h4 class="application-title">Web Development Intern</h4>
+                                <p class="application-company">TechCorp Solutions, Lahore</p>
+                                <p class="application-date">Applied on: December 15, 2024</p>
+                            </div>
+                            <div class="application-status status-shortlisted">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Shortlisted
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4 application-details">
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Expected Salary</span>
+                                    <span class="detail-value">PKR 25,000 - 35,000</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Experience</span>
+                                    <span class="detail-value">Fresher</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Application ID</span>
+                                    <span class="detail-value">APP-2024-001</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Submitted</h5>
+                                    <p class="timeline-subtitle">Your application was successfully submitted</p>
+                                    <p class="timeline-date">December 15, 2024 - 10:30 AM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Under Review</h5>
+                                    <p class="timeline-subtitle">Employer is reviewing your application</p>
+                                    <p class="timeline-date">December 16, 2024 - 2:15 PM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Shortlisted</h5>
+                                    <p class="timeline-subtitle">Congratulations! You have been shortlisted for an interview</p>
+                                    <p class="timeline-date">December 18, 2024 - 4:45 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="application-actions d-flex gap-2">
+                            <button class="action-btn view" onclick="viewApplication('APP-2024-001')">
+                                <i class="bi bi-eye"></i>
+                                View Details
+                            </button>
+                            <button class="action-btn withdraw" onclick="withdrawApplication('Web Development Intern')">
+                                <i class="bi bi-x-circle"></i>
+                                Withdraw
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Application 2 -->
+                    <div class="application-card" data-status="offered">
+                        <div class="application-header">
+                            <div>
+                                <h4 class="application-title">Junior Software Developer</h4>
+                                <p class="application-company">InnovateLab, Karachi</p>
+                                <p class="application-date">Applied on: December 10, 2024</p>
+                            </div>
+                            <div class="application-status status-offered">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Offered
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4 application-details">
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Expected Salary</span>
+                                    <span class="detail-value">PKR 40,000 - 50,000</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Experience</span>
+                                    <span class="detail-value">0-1 Years</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Application ID</span>
+                                    <span class="detail-value">APP-2024-002</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Submitted</h5>
+                                    <p class="timeline-subtitle">Your application was successfully submitted</p>
+                                    <p class="timeline-date">December 10, 2024 - 9:15 AM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Under Review</h5>
+                                    <p class="timeline-subtitle">Employer is reviewing your application</p>
+                                    <p class="timeline-date">December 11, 2024 - 11:30 AM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Interview Scheduled</h5>
+                                    <p class="timeline-subtitle">Interview scheduled for December 15, 2024</p>
+                                    <p class="timeline-date">December 12, 2024 - 3:20 PM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Job Offer</h5>
+                                    <p class="timeline-subtitle">Congratulations! You have received a job offer</p>
+                                    <p class="timeline-date">December 16, 2024 - 1:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="application-actions d-flex gap-2">
+                            <button class="action-btn view" onclick="viewApplication('APP-2024-002')">
+                                <i class="bi bi-eye"></i>
+                                View Details
+                            </button>
+                            <button class="action-btn withdraw" onclick="withdrawApplication('Junior Software Developer')">
+                                <i class="bi bi-x-circle"></i>
+                                Withdraw
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Application 3 -->
+                    <div class="application-card" data-status="reviewed">
+                        <div class="application-header">
+                            <div>
+                                <h4 class="application-title">UI/UX Designer</h4>
+                                <p class="application-company">CreativeMinds, Islamabad</p>
+                                <p class="application-date">Applied on: December 5, 2024</p>
+                            </div>
+                            <div class="application-status status-reviewed">
+                                <i class="bi bi-clock"></i>
+                                Under Review
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4 application-details">
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Expected Salary</span>
+                                    <span class="detail-value">PKR 35,000 - 45,000</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Experience</span>
+                                    <span class="detail-value">Fresher</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Application ID</span>
+                                    <span class="detail-value">APP-2024-003</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Submitted</h5>
+                                    <p class="timeline-subtitle">Your application was successfully submitted</p>
+                                    <p class="timeline-date">December 5, 2024 - 2:45 PM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Under Review</h5>
+                                    <p class="timeline-subtitle">Employer is reviewing your application</p>
+                                    <p class="timeline-date">December 6, 2024 - 10:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="application-actions d-flex gap-2">
+                            <button class="action-btn view" onclick="viewApplication('APP-2024-003')">
+                                <i class="bi bi-eye"></i>
+                                View Details
+                            </button>
+                            <button class="action-btn withdraw" onclick="withdrawApplication('UI/UX Designer')">
+                                <i class="bi bi-x-circle"></i>
+                                Withdraw
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Application 4 -->
+                    <div class="application-card" data-status="rejected">
+                        <div class="application-header">
+                            <div>
+                                <h4 class="application-title">Data Entry Operator</h4>
+                                <p class="application-company">Global Services, Lahore</p>
+                                <p class="application-date">Applied on: November 28, 2024</p>
+                            </div>
+                            <div class="application-status status-rejected">
+                                <i class="bi bi-x-circle-fill"></i>
+                                Rejected
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4 application-details">
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Expected Salary</span>
+                                    <span class="detail-value">PKR 20,000 - 25,000</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Experience</span>
+                                    <span class="detail-value">Fresher</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Application ID</span>
+                                    <span class="detail-value">APP-2024-004</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Submitted</h5>
+                                    <p class="timeline-subtitle">Your application was successfully submitted</p>
+                                    <p class="timeline-date">November 28, 2024 - 11:20 AM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Under Review</h5>
+                                    <p class="timeline-subtitle">Employer is reviewing your application</p>
+                                    <p class="timeline-date">November 29, 2024 - 3:15 PM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Rejected</h5>
+                                    <p class="timeline-subtitle">Unfortunately, your application was not selected</p>
+                                    <p class="timeline-date">December 1, 2024 - 9:30 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="application-actions d-flex gap-2">
+                            <button class="action-btn view" onclick="viewApplication('APP-2024-004')">
+                                <i class="bi bi-eye"></i>
+                                View Details
+                            </button>
+                            <button class="action-btn withdraw" style="display: none;">
+                                <i class="bi bi-x-circle"></i>
+                                Withdraw
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Application 5 -->
+                    <div class="application-card" data-status="pending">
+                        <div class="application-header">
+                            <div>
+                                <h4 class="application-title">Technical Support Specialist</h4>
+                                <p class="application-company">TechHelp, Rawalpindi</p>
+                                <p class="application-date">Applied on: December 20, 2024</p>
+                            </div>
+                            <div class="application-status status-pending">
+                                <i class="bi bi-clock"></i>
+                                Pending
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4 application-details">
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Expected Salary</span>
+                                    <span class="detail-value">PKR 30,000 - 40,000</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Experience</span>
+                                    <span class="detail-value">Fresher</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="detail-item">
+                                    <span class="detail-label">Application ID</span>
+                                    <span class="detail-value">APP-2024-005</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <h5 class="timeline-title">Application Submitted</h5>
+                                    <p class="timeline-subtitle">Your application was successfully submitted</p>
+                                    <p class="timeline-date">December 20, 2024 - 4:30 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="application-actions d-flex gap-2">
+                            <button class="action-btn view" onclick="viewApplication('APP-2024-005')">
+                                <i class="bi bi-eye"></i>
+                                View Details
+                            </button>
+                            <button class="action-btn withdraw" onclick="withdrawApplication('Technical Support Specialist')">
+                                <i class="bi bi-x-circle"></i>
+                                Withdraw
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('applicationsSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function filterApplications(status) {
+            // Remove active class from all filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Show/hide applications based on status
+            const applications = document.querySelectorAll('.application-card');
+            applications.forEach(app => {
+                if (status === 'all' || app.dataset.status === status) {
+                    app.style.display = 'block';
+                } else {
+                    app.style.display = 'none';
+                }
+            });
+        }
+
+        function viewApplication(applicationId) {
+            showToast('Application Details', `Viewing details for application ${applicationId}`, 'info');
+        }
+
+        function withdrawApplication(jobTitle) {
+            if (confirm(`Are you sure you want to withdraw your application for ${jobTitle}?`)) {
+                showToast('Application Withdrawn', `Your application for ${jobTitle} has been withdrawn`, 'info');
+            }
+        }
+    </script>
+</body>
+
+</html>
