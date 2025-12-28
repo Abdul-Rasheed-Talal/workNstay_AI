@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Employer Dashboard - WorkNStay AI">
+    <title>Employer Dashboard - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles (Repeated for standalone) */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .sidebar-brand span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--gray-900);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .nav-item.active {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+            width: 24px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: var(--bg-secondary);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .content-area {
+            padding: 32px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            padding: 32px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='250' cy='50' r='100' fill='rgba(255,255,255,0.1)'/%3E%3Ccircle cx='300' cy='150' r='80' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E") no-repeat right center;
+        }
+
+        /* Quick Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.green {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.blue {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--secondary);
+        }
+
+        .stat-icon.orange {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-gold);
+        }
+
+        .stat-icon.purple {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+        }
+
+        /* Company Profile Section */
+        .company-profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .company-logo-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--gray-500);
+        }
+
+        /* Jobs Table */
+        .table-responsive {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--gray-100);
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-custom th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .table-custom td {
+            padding: 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--gray-50);
+            color: var(--gray-900);
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-closed {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .status-draft {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .company-profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-check-fill"></i>
+                    </div>
+                    <span>WorkNStay</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="employer-dashboard.html" class="nav-item active">
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="post-job.html" class="nav-item">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Post a Job</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="manage-jobs.html" class="nav-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        <span>My Jobs</span>
+                    </a>
+                    <a href="manage-applications.html" class="nav-item">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Applications</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-chat-dots-fill"></i>
+                        <span>Messages</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Company</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-building-fill"></i>
+                        <span>Company Profile</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-gear-fill"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="nav-item text-danger">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Employer Dashboard</h1>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="topbar-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-profile d-flex align-items-center gap-2">
+                        <div class="avatar avatar-sm">
+                            <img src="https://ui-avatars.com/api/?name=Tech+Corp&background=1a7f5a&color=fff"
+                                alt="Tech Corp">
+                        </div>
+                        <div class="d-none d-md-block">
+                            <div style="font-size: 14px; font-weight: 600;">Tech Corp Solutions</div>
+                            <div style="font-size: 12px; color: var(--gray-500);">Employer Account</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Welcome Section -->
+                <div class="welcome-card">
+                    <div class="welcome-content">
+                        <h2 class="welcome-title">Welcome back, Tech Corp! 👋</h2>
+                        <p class="welcome-text">Here's what's happening with your job postings and applications today.
+                        </p>
+                        <a href="post-job.html" class="btn btn-light text-success fw-bold">
+                            <i class="bi bi-plus-lg me-2"></i>Post New Job
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. Quick Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="bi bi-briefcase"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>12</h3>
+                            <p>Active Jobs</p>
+                        </div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-icon blue">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>84</h3>
+                            <p>Total Applications</p>
+                        </div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-icon orange">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>1.2k</h3>
+                            <p>Job Views</p>
+                        </div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-icon purple">
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>5</h3>
+                            <p>Shortlisted</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- 1. Company Profile Section (Summary) -->
+                    <div class="col-12 mb-4">
+                        <div class="company-profile-card border">
+                            <div class="company-logo-large">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h3 class="h4 mb-1">Tech Corp Solutions</h3>
+                                <p class="text-muted mb-2">Software Development • Lahore, Pakistan</p>
+                                <div class="d-flex gap-3">
+                                    <span class="badge bg-light text-dark border"><i
+                                            class="bi bi-check-circle-fill text-success me-1"></i> Verified
+                                        Employer</span>
+                                    <span class="badge bg-light text-dark border"><i
+                                            class="bi bi-star-fill text-warning me-1"></i> 4.8 Rating</span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-primary">Edit Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- 2. Posted Jobs List -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="card-custom h-100">
+                            <div class="card-header-custom d-flex justify-content-between align-items-center bg-white">
+                                <h5 class="mb-0">Recent Job Postings</h5>
+                                <a href="manage-jobs.html" class="btn btn-sm btn-ghost">View All</a>
+                            </div>
+                            <div class="table-responsive border-0">
+                                <table class="table-custom">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Title</th>
+                                            <th>Applied</th>
+                                            <th>Posted Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="fw-bold">Junior Web Developer</div>
+                                                <div class="text-muted small">Full Time • Hybrid</div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <div class="avatar-group">
+                                                        <div class="avatar avatar-sm"><img
+                                                                src="https://ui-avatars.com/api/?name=Ali+Raza&background=random"
+                                                                alt=""></div>
+                                                        <div class="avatar avatar-sm"><img
+                                                                src="https://ui-avatars.com/api/?name=Sara+Khan&background=random"
+                                                                alt=""></div>
+                                                    </div>
+                                                    <span class="small text-muted">+12</span>
+                                                </div>
+                                            </td>
+                                            <td>Dec 25, 2024</td>
+                                            <td><span class="status-badge status-active">Active</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-light border"><i
+                                                        class="bi bi-three-dots"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="fw-bold">Graphic Designer</div>
+                                                <div class="text-muted small">Internship • On-site</div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <div class="avatar-group">
+                                                        <div class="avatar avatar-sm"><img
+                                                                src="https://ui-avatars.com/api/?name=Usman+Ali&background=random"
+                                                                alt=""></div>
+                                                    </div>
+                                                    <span class="small text-muted">+4</span>
+                                                </div>
+                                            </td>
+                                            <td>Dec 20, 2024</td>
+                                            <td><span class="status-badge status-active">Active</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-light border"><i
+                                                        class="bi bi-three-dots"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="fw-bold">React Native Developer</div>
+                                                <div class="text-muted small">Contract • Remote</div>
+                                            </td>
+                                            <td>
+                                                <div class="text-muted small">0 Applicants</div>
+                                            </td>
+                                            <td>Dec 18, 2024</td>
+                                            <td><span class="status-badge status-draft">Draft</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-light border"><i
+                                                        class="bi bi-three-dots"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Applications Overview -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card-custom h-100">
+                            <div class="card-header-custom bg-white">
+                                <h5 class="mb-0">Recent Applications</h5>
+                            </div>
+                            <div class="card-body-custom p-0">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item p-3 border-bottom">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar avatar-md rounded-3">
+                                                <img src="https://ui-avatars.com/api/?name=Hassan+Ali&background=random"
+                                                    alt="">
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="mb-0">Hassan Ali</h6>
+                                                    <span class="text-muted small">2m ago</span>
+                                                </div>
+                                                <div class="small text-muted">Applied for <span
+                                                        class="text-dark fw-medium">Web Developer</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item p-3 border-bottom">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar avatar-md rounded-3">
+                                                <img src="https://ui-avatars.com/api/?name=Zainab+Bibi&background=random"
+                                                    alt="">
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="mb-0">Zainab Bibi</h6>
+                                                    <span class="text-muted small">1h ago</span>
+                                                </div>
+                                                <div class="small text-muted">Applied for <span
+                                                        class="text-dark fw-medium">Graphic Designer</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item p-3 border-bottom">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar avatar-md rounded-3">
+                                                <img src="https://ui-avatars.com/api/?name=Kamran+Khan&background=random"
+                                                    alt="">
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="mb-0">Kamran Khan</h6>
+                                                    <span class="text-muted small">3h ago</span>
+                                                </div>
+                                                <div class="small text-muted">Applied for <span
+                                                        class="text-dark fw-medium">Web Developer</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 text-center">
+                                        <a href="manage-applications.html"
+                                            class="btn btn-sm btn-outline-primary w-100">View All Applications</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Use existing toggleSidebar if available in main.js, otherwise simple implementation
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+    </script>
+</body>
+
+</html>

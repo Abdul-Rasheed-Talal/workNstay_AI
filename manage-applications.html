@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage Applications - WorkNStay AI">
+    <title>Manage Applications - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .sidebar-brand span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--gray-900);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+
+        .nav-item.active {
+            background: rgba(26, 127, 90, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+            width: 24px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: var(--bg-secondary);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .content-area {
+            padding: 32px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* Application Specific Styles */
+        .filter-bar {
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid var(--gray-100);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .applicant-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--gray-100);
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .applicant-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .applicant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .applicant-info {
+            display: flex;
+            gap: 16px;
+        }
+
+        .applicant-skills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .skill-tag {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-select {
+            min-width: 140px;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .status-select.new {
+            background: var(--info-light);
+            color: var(--info);
+            border: 1px solid var(--info);
+        }
+
+        .status-select.review {
+            background: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .status-select.shortlist {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-select.reject {
+            background: var(--error-light);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-check-fill"></i>
+                    </div>
+                    <span>WorkNStay</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="employer-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="post-job.html" class="nav-item">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Post a Job</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="manage-jobs.html" class="nav-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        <span>My Jobs</span>
+                    </a>
+                    <a href="manage-applications.html" class="nav-item active">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Applications</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-chat-dots-fill"></i>
+                        <span>Messages</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Company</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-building-fill"></i>
+                        <span>Company Profile</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-gear-fill"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn d-lg-none" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Manage Applications</h1>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="topbar-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-profile d-flex align-items-center gap-2">
+                        <div class="avatar avatar-sm">
+                            <img src="https://ui-avatars.com/api/?name=Tech+Corp&background=1a7f5a&color=fff"
+                                alt="Tech Corp">
+                        </div>
+                        <div class="d-none d-md-block">
+                            <div style="font-size: 14px; font-weight: 600;">Tech Corp Solutions</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Filters -->
+                <div class="filter-bar">
+                    <div class="flex-grow-1">
+                        <input type="text" class="form-control-custom"
+                            placeholder="Search by name, email or job title...">
+                    </div>
+                    <div style="width: 200px;">
+                        <select class="form-control-custom form-select-custom">
+                            <option>All Jobs</option>
+                            <option>Junior Web Developer</option>
+                            <option>Graphic Designer</option>
+                        </select>
+                    </div>
+                    <div style="width: 180px;">
+                        <select class="form-control-custom form-select-custom">
+                            <option>All Status</option>
+                            <option>New</option>
+                            <option>Reviewed</option>
+                            <option>Shortlisted</option>
+                            <option>Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Applications List -->
+                <div class="applicants-list">
+                    <!-- Applicant 1 -->
+                    <div class="applicant-card">
+                        <div class="applicant-header">
+                            <div class="applicant-info">
+                                <div class="avatar avatar-lg rounded-3">
+                                    <img src="https://ui-avatars.com/api/?name=Hassan+Ali&background=random" alt="">
+                                </div>
+                                <div>
+                                    <h4 class="h6 fw-bold mb-1">Hassan Ali</h4>
+                                    <div class="text-muted small mb-1">Applied for <span
+                                            class="text-primary fw-medium">Junior Web Developer</span></div>
+                                    <div class="text-muted small"><i class="bi bi-geo-alt-fill me-1"></i> Lahore,
+                                        Pakistan • 2 hours ago</div>
+                                </div>
+                            </div>
+                            <div>
+                                <select class="status-select new" onchange="updateStatusClass(this)">
+                                    <option value="new" selected>New</option>
+                                    <option value="review">Reviewed</option>
+                                    <option value="shortlist">Shortlisted</option>
+                                    <option value="reject">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-9">
+                                <div class="p-3 bg-light rounded-3 small text-muted">
+                                    "I am a passionate web developer with 2 years of experience in building responsive
+                                    websites..."
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="applicant-skills">
+                            <div class="skill-tag">HTML5</div>
+                            <div class="skill-tag">CSS3</div>
+                            <div class="skill-tag">JavaScript</div>
+                            <div class="skill-tag">Bootstrap</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary btn-custom" data-bs-toggle="modal"
+                                data-bs-target="#profileModal"><i class="bi bi-eye me-1"></i> View Profile</button>
+                            <button class="btn btn-sm btn-outline-secondary btn-custom"><i class="bi bi-chat me-1"></i>
+                                Message</button>
+                            <button class="btn btn-sm btn-light btn-custom text-danger"><i class="bi bi-trash me-1"></i>
+                                Reject</button>
+                        </div>
+                    </div>
+
+                    <!-- Applicant 2 -->
+                    <div class="applicant-card">
+                        <div class="applicant-header">
+                            <div class="applicant-info">
+                                <div class="avatar avatar-lg rounded-3">
+                                    <img src="https://ui-avatars.com/api/?name=Zainab+Bibi&background=random" alt="">
+                                </div>
+                                <div>
+                                    <h4 class="h6 fw-bold mb-1">Zainab Bibi</h4>
+                                    <div class="text-muted small mb-1">Applied for <span
+                                            class="text-primary fw-medium">Graphic Designer</span></div>
+                                    <div class="text-muted small"><i class="bi bi-geo-alt-fill me-1"></i> Karachi,
+                                        Pakistan • 5 hours ago</div>
+                                </div>
+                            </div>
+                            <div>
+                                <select class="status-select review" onchange="updateStatusClass(this)">
+                                    <option value="new">New</option>
+                                    <option value="review" selected>Reviewed</option>
+                                    <option value="shortlist">Shortlisted</option>
+                                    <option value="reject">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-9">
+                                <div class="p-3 bg-light rounded-3 small text-muted">
+                                    "Creative graphic designer with a portfolio of branding and social media designs..."
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="applicant-skills">
+                            <div class="skill-tag">Photoshop</div>
+                            <div class="skill-tag">Illustrator</div>
+                            <div class="skill-tag">Figma</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary btn-custom"><i class="bi bi-eye me-1"></i>
+                                View Profile</button>
+                            <button class="btn btn-sm btn-outline-secondary btn-custom"><i class="bi bi-chat me-1"></i>
+                                Message</button>
+                            <button class="btn btn-sm btn-outline-success btn-custom"><i
+                                    class="bi bi-check-lg me-1"></i> Shortlist</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Applicant Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-4">
+                    <div class="text-center mb-4">
+                        <div class="avatar avatar-xl rounded-circle mb-3">
+                            <img src="https://ui-avatars.com/api/?name=Hassan+Ali&background=random" alt="">
+                        </div>
+                        <h3 class="h4 fw-bold mb-1">Hassan Ali</h3>
+                        <p class="text-muted">Web Developer</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <span class="badge badge-success"><i class="bi bi-check-circle-fill me-1"></i> TEVTA
+                                Verified</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h5 class="h6 fw-bold mb-3">Contact Information</h5>
+                            <div class="d-flex align-items-center gap-2 mb-2 text-muted">
+                                <i class="bi bi-envelope"></i> hassan.ali@example.com
+                            </div>
+                            <div class="d-flex align-items-center gap-2 mb-2 text-muted">
+                                <i class="bi bi-phone"></i> +92 300 1234567
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="h6 fw-bold mb-3">Education</h5>
+                            <div class="d-flex gap-3 mb-3">
+                                <div class="bg-light p-2 rounded text-center" style="min-width: 60px;">
+                                    <div class="fw-bold">2023</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">Diploma in Web Development</div>
+                                    <div class="small text-muted">TEVTA Institute, Lahore</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-outline-secondary btn-custom"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-custom">Download Resume</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+
+        function updateStatusClass(select) {
+            select.className = 'status-select ' + select.value;
+            // In a real app, this would make an API call
+            showToast(`Status updated to ${select.options[select.selectedIndex].text}`);
+        }
+
+        // Filtering Logic
+        const searchInput = document.querySelector('input[placeholder="Search by name, email or job title..."]');
+        const jobFilter = document.querySelectorAll('.form-select-custom')[0];
+        const statusFilter = document.querySelectorAll('.form-select-custom')[1];
+
+        function filterApplications() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedJob = jobFilter.value;
+            const selectedStatus = statusFilter.value;
+
+            document.querySelectorAll('.applicant-card').forEach(card => {
+                const name = card.querySelector('h4').textContent.toLowerCase();
+                const jobTitle = card.querySelector('.applicant-info .text-primary').textContent;
+                const badges = card.querySelectorAll('.status-select option:checked');
+                const status = badges[0].text;
+
+                const matchesSearch = name.includes(searchTerm) || jobTitle.toLowerCase().includes(searchTerm);
+                const matchesJob = selectedJob === 'All Jobs' || jobTitle === selectedJob;
+                const matchesStatus = selectedStatus === 'All Status' || status === selectedStatus;
+
+                if (matchesSearch && matchesJob && matchesStatus) {
+                    card.style.display = 'block';
+                    card.classList.add('fade-in');
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterApplications);
+        jobFilter.addEventListener('change', filterApplications);
+        statusFilter.addEventListener('change', filterApplications);
+
+        // Simulated Actions
+        document.querySelectorAll('.btn-outline-success').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const card = this.closest('.applicant-card');
+                const select = card.querySelector('.status-select');
+                select.value = 'shortlist';
+                updateStatusClass(select);
+                showToast('Applicant shortlisted successfully!');
+            });
+        });
+
+        document.querySelectorAll('.text-danger').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (confirm('Are you sure you want to reject this applicant?')) {
+                    const card = this.closest('.applicant-card');
+                    const select = card.querySelector('.status-select');
+                    select.value = 'reject';
+                    updateStatusClass(select);
+                    showToast('Applicant rejected.');
+                }
+            });
+        });
+
+        // Simple Toast Notification (if not in main.js)
+        function showToast(message) {
+            // Check if toast container exists
+            let container = document.querySelector('.toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                document.body.appendChild(container);
+            }
+
+            const toastId = 'toast' + Date.now();
+            const html = `
+                <div id="${toastId}" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML += html;
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+    </script>
+</body>
+
+</html>
