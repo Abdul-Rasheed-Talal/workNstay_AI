@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Add New Hostel - WorkNStay AI">
+    <title>Add New Hostel - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .content-area {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i>
+                        Dashboard
+                    </a>
+                    <a href="add-hostel.html" class="nav-item active">
+                        <i class="bi bi-plus-circle"></i>
+                        Add New Hostel
+                    </a>
+                    <a href="manage-hostels.html" class="nav-item">
+                        <i class="bi bi-building"></i>
+                        My Hostels
+                        <span class="badge">3</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Bookings</div>
+                    <a href="manage-bookings.html" class="nav-item">
+                        <i class="bi bi-calendar-check"></i>
+                        Manage Bookings
+                        <span class="badge">5</span>
+                    </a>
+                    <a href="tenants.html" class="nav-item">
+                        <i class="bi bi-people"></i>
+                        Tenants
+                    </a>
+                    <a href="payments.html" class="nav-item">
+                        <i class="bi bi-credit-card"></i>
+                        Payments
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Feedback</div>
+                    <a href="hostel-reviews.html" class="nav-item">
+                        <i class="bi bi-chat-quote"></i>
+                        Reviews
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-star"></i>
+                        Ratings
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-gear"></i>
+                        Settings
+                    </a>
+                    <a href="login.html" class="nav-item">
+                        <i class="bi bi-box-arrow-left"></i>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">AK</div>
+                    <div class="user-info">
+                        <div class="user-name">Ahmed Khan</div>
+                        <div class="user-role">Hostel Owner</div>
+                    </div>
+                    <i class="bi bi-chevron-expand text-muted"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Add New Hostel</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn">
+                        <i class="bi bi-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <form id="addHostelForm">
+                    <!-- Basic Information -->
+                    <div class="form-card fade-in">
+                        <div class="form-card-header">
+                            <div class="form-card-icon">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <div>
+                                <h2 class="form-card-title">Basic Information</h2>
+                                <p class="form-card-subtitle">Enter the basic details about your hostel</p>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label">Hostel Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" placeholder="e.g., Green View Student Hostel"
+                                    required>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">Description <span class="required">*</span></label>
+                                <textarea class="form-control"
+                                    placeholder="Describe your hostel, its features, surrounding areas, and what makes it special..."
+                                    required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Hostel Type <span class="required">*</span></label>
+                                <select class="form-control form-select" required>
+                                    <option value="">Select Type</option>
+                                    <option value="boys">Boys Hostel</option>
+                                    <option value="girls">Girls Hostel</option>
+                                    <option value="coed">Co-ed Hostel</option>
+                                    <option value="working">Working Professionals</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Nearby Institution</label>
+                                <input type="text" class="form-control"
+                                    placeholder="e.g., GTI Lahore, COMSATS University">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Images -->
+                    <div class="form-card fade-in delay-1">
+                        <div class="form-card-header">
+                            <div class="form-card-icon">
+                                <i class="bi bi-images"></i>
+                            </div>
+                            <div>
+                                <h2 class="form-card-title">Hostel Images</h2>
+                                <p class="form-card-subtitle">Upload high-quality images of your hostel</p>
+                            </div>
+                        </div>
+
+                        <div class="image-upload-area" onclick="document.getElementById('imageInput').click()">
+                            <div class="image-upload-icon">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                            </div>
+                            <div class="image-upload-title">Click to upload images</div>
+                            <div class="image-upload-hint">PNG, JPG up to 5MB (Maximum 10 images)</div>
+                            <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+                        </div>
+
+                        <div class="image-previews" id="imagePreviews">
+                            <div class="image-preview">
+                                <i class="bi bi-image"></i>
+                                <button type="button" class="remove-btn"><i class="bi bi-x"></i></button>
+                            </div>
+                            <div class="image-preview">
+                                <i class="bi bi-image"></i>
+                                <button type="button" class="remove-btn"><i class="bi bi-x"></i></button>
+                            </div>
+                            <div class="image-preview">
+                                <i class="bi bi-image"></i>
+                                <button type="button" class="remove-btn"><i class="bi bi-x"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room Types & Pricing -->
+                    <div class="form-card fade-in delay-2">
+                        <div class="form-card-header">
+                            <div class="form-card-icon">
+                                <i class="bi bi-door-open"></i>
+                            </div>
+                            <div>
+                                <h2 class="form-card-title">Room Types & Pricing</h2>
+                                <p class="form-card-subtitle">Define different room types and their pricing</p>
+                            </div>
+                        </div>
+
+                        <div id="roomTypesContainer">
+                            <div class="room-type-card">
+                                <div class="room-type-header">
+                                    <span class="room-type-title">Room Type 1</span>
+                                    <button type="button" class="remove-room-btn" onclick="removeRoomType(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="room-type-fields">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">Room Name <span class="required">*</span></label>
+                                        <input type="text" class="form-control" placeholder="e.g., Shared Room (3 beds)"
+                                            required>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">Price (Rs/month) <span
+                                                class="required">*</span></label>
+                                        <input type="number" class="form-control" placeholder="e.g., 8000" required>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">Available Rooms <span
+                                                class="required">*</span></label>
+                                        <input type="number" class="form-control" placeholder="e.g., 10" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="room-type-card">
+                                <div class="room-type-header">
+                                    <span class="room-type-title">Room Type 2</span>
+                                    <button type="button" class="remove-room-btn" onclick="removeRoomType(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="room-type-fields">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">Room Name <span class="required">*</span></label>
+                                        <input type="text" class="form-control" placeholder="e.g., Twin Sharing"
+                                            required>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">Price (Rs/month) <span
+                                                class="required">*</span></label>
+                                        <input type="number" class="form-control" placeholder="e.g., 10000" required>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">Available Rooms <span
+                                                class="required">*</span></label>
+                                        <input type="number" class="form-control" placeholder="e.g., 8" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="add-room-btn" onclick="addRoomType()">
+                            <i class="bi bi-plus-lg"></i>
+                            Add Another Room Type
+                        </button>
+                    </div>
+
+                    <!-- Facilities -->
+                    <div class="form-card fade-in delay-3">
+                        <div class="form-card-header">
+                            <div class="form-card-icon">
+                                <i class="bi bi-grid-1x2"></i>
+                            </div>
+                            <div>
+                                <h2 class="form-card-title">Facilities & Amenities</h2>
+                                <p class="form-card-subtitle">Select all the facilities available at your hostel</p>
+                            </div>
+                        </div>
+
+                        <div class="facilities-grid">
+                            <label class="facility-checkbox checked">
+                                <input type="checkbox" checked>
+                                <i class="bi bi-wifi"></i>
+                                <span>WiFi</span>
+                            </label>
+                            <label class="facility-checkbox checked">
+                                <input type="checkbox" checked>
+                                <i class="bi bi-shield-check"></i>
+                                <span>24/7 Security</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-cup-hot"></i>
+                                <span>Mess Facility</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-droplet"></i>
+                                <span>Filtered Water</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-plug"></i>
+                                <span>Power Backup</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-p-circle"></i>
+                                <span>Parking</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-book"></i>
+                                <span>Study Room</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-tv"></i>
+                                <span>Common Room</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-basket"></i>
+                                <span>Laundry</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-snow"></i>
+                                <span>Air Conditioning</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-fan"></i>
+                                <span>Ceiling Fans</span>
+                            </label>
+                            <label class="facility-checkbox">
+                                <input type="checkbox">
+                                <i class="bi bi-joystick"></i>
+                                <span>Recreation Area</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-card fade-in delay-4">
+                        <div class="form-card-header">
+                            <div class="form-card-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div>
+                                <h2 class="form-card-title">Location Details</h2>
+                                <p class="form-card-subtitle">Provide accurate location for your hostel</p>
+                            </div>
+                        </div>
+
+                        <div class="location-picker">
+                            <i class="bi bi-map"></i>
+                            <p>Click to select location on map</p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label">Full Address <span class="required">*</span></label>
+                                <input type="text" class="form-control"
+                                    placeholder="e.g., 123 Model Town, Block C, Lahore" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">City <span class="required">*</span></label>
+                                <select class="form-control form-select" required>
+                                    <option value="">Select City</option>
+                                    <option value="lahore">Lahore</option>
+                                    <option value="karachi">Karachi</option>
+                                    <option value="islamabad">Islamabad</option>
+                                    <option value="rawalpindi">Rawalpindi</option>
+                                    <option value="faisalabad">Faisalabad</option>
+                                    <option value="multan">Multan</option>
+                                    <option value="peshawar">Peshawar</option>
+                                    <option value="quetta">Quetta</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Area/Neighborhood</label>
+                                <input type="text" class="form-control" placeholder="e.g., Model Town, Gulberg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="form-card fade-in delay-5">
+                        <div class="form-card-header">
+                            <div class="form-card-icon">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <div>
+                                <h2 class="form-card-title">Contact Information</h2>
+                                <p class="form-card-subtitle">How can students reach you?</p>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Phone Number <span class="required">*</span></label>
+                                <input type="tel" class="form-control" placeholder="e.g., 0300-1234567" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">WhatsApp Number</label>
+                                <input type="tel" class="form-control" placeholder="e.g., 0300-1234567">
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" placeholder="e.g., info@yourhostel.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-card">
+                        <div class="form-actions">
+                            <button type="button" class="btn-save-draft">
+                                <i class="bi bi-save"></i>
+                                Save as Draft
+                            </button>
+                            <button type="submit" class="btn-submit">
+                                <i class="bi bi-check-circle"></i>
+                                Submit for Review
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Booking Details - WorkNStay AI">
+    <title>Booking Details - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .info-section {
+            padding: 24px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--gray-100);
+            margin-bottom: 24px;
+        }
+
+        .info-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-50);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        @media (max-width: 992px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar (Reused) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i>
+                        Dashboard
+                    </a>
+                    <a href="manage-bookings.html" class="nav-item active">
+                        <i class="bi bi-calendar-check"></i>
+                        Manage Bookings
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <a href="manage-bookings.html" class="btn-custom btn-outline-primary btn-sm me-3">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                    <h1 class="page-title">Booking #BK-8824</h1>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="status-header fade-in">
+                    <div>
+                        <span class="status-badge pending mb-2">Pending Review</span>
+                        <p class="text-muted mb-0">Received on Dec 20, 2024</p>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="btn-custom btn-outline-danger">Reject Booking</button>
+                        <button class="btn-custom btn-primary">Approve Booking</button>
+                    </div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="main-details">
+                        <!-- Tenant Info -->
+                        <div class="info-section fade-in">
+                            <h3 class="info-title">
+                                <i class="bi bi-person text-primary"></i>
+                                Tenant Information
+                            </h3>
+                            <div class="d-flex align-items-center gap-4 mb-4">
+                                <div class="avatar avatar-xl bg-gradient-primary">MH</div>
+                                <div>
+                                    <h4 class="mb-1">Muhammad Hassan</h4>
+                                    <p class="text-muted mb-2">DAE Mechanical • GTI Lahore</p>
+                                    <span class="badge-custom badge-verified">
+                                        <i class="bi bi-patch-check-fill"></i>
+                                        Identity Verified
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Email</span>
+                                        <span class="info-value">hassan@email.com</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Phone</span>
+                                        <span class="info-value">+92 300 1234567</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">City</span>
+                                        <span class="info-value">Faisalabad</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Student ID</span>
+                                        <span class="info-value">TEVTA-2024-889</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Booking Details -->
+                        <div class="info-section fade-in delay-1">
+                            <h3 class="info-title">
+                                <i class="bi bi-calendar-event text-primary"></i>
+                                Booking Details
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Hostel</span>
+                                        <span class="info-value">Green View Student Hostel</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Room Type</span>
+                                        <span class="info-value">Shared (3 Beds)</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Stay Duration</span>
+                                        <span class="info-value">6 Months</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Move-in Date</span>
+                                        <span class="info-value">Jan 5, 2025</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Monthly Rent</span>
+                                        <span class="info-value">Rs. 8,000</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Security Deposit</span>
+                                        <span class="info-value">Rs. 5,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="side-details">
+                        <!-- Documents -->
+                        <div class="info-section fade-in delay-2">
+                            <h3 class="info-title">
+                                <i class="bi bi-file-earmark-text text-primary"></i>
+                                Documents
+                            </h3>
+                            <div class="list-group list-group-flush">
+                                <a href="#"
+                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <i class="bi bi-file-pdf fs-4 text-danger"></i>
+                                        <div>
+                                            <div class="fw-600">CNIC Copy</div>
+                                            <small class="text-muted">PDF • 1.2 MB</small>
+                                        </div>
+                                    </div>
+                                    <i class="bi bi-download"></i>
+                                </a>
+                                <a href="#"
+                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <i class="bi bi-file-image fs-4 text-primary"></i>
+                                        <div>
+                                            <div class="fw-600">Admission Letter</div>
+                                            <small class="text-muted">JPG • 2.5 MB</small>
+                                        </div>
+                                    </div>
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Trust Score -->
+                        <div class="info-section fade-in delay-3"
+                            style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfeff 100%);">
+                            <h3 class="info-title">
+                                <i class="bi bi-shield-check text-success"></i>
+                                AI Trust Score
+                            </h3>
+                            <div class="text-center mb-4">
+                                <div class="h2 fw-bold text-success mb-0">95/100</div>
+                                <p class="small text-muted">Excellent Reliability</p>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-success" style="width: 95%"></div>
+                            </div>
+                            <ul class="list-unstyled small text-muted mb-0">
+                                <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i> Verified Student ID</li>
+                                <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i> Clean Payment History
+                                </li>
+                                <li><i class="bi bi-check2 text-success me-2"></i> Positive Previous Reviews</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>

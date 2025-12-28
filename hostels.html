@@ -207,15 +207,15 @@
 
         .price-range {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
         }
 
         .price-input {
-            flex: 1;
-            padding: 10px 12px;
+            width: 100px;
+            padding: 8px 12px;
             border: 1px solid var(--gray-200);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
         }
 
@@ -510,10 +510,66 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
-                    <a href="dashboard.html" class="btn-custom btn-primary">
-                        <i class="bi bi-grid"></i>
-                        Dashboard
-                    </a>
+                    <div class="dropdown">
+                        <button class="btn-custom btn-outline-primary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-building"></i>
+                            Owner Portal
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg p-3"
+                            style="border-radius: 16px; min-width: 280px;">
+                            <li class="mb-2">
+                                <a class="dropdown-item p-3 d-flex align-items-center gap-3"
+                                    style="border-radius: 12px;" href="hostel-owner-dashboard.html">
+                                    <i class="bi bi-grid-1x2 fs-5 text-primary"></i>
+                                    <div>
+                                        <div class="fw-bold">Owner Dashboard</div>
+                                        <small class="text-muted">Overview & Stats</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a class="dropdown-item p-3 d-flex align-items-center gap-3"
+                                    style="border-radius: 12px;" href="availability-calendar.html">
+                                    <i class="bi bi-calendar3 fs-5 text-primary"></i>
+                                    <div>
+                                        <div class="fw-bold">Availability</div>
+                                        <small class="text-muted">Real-time Grid</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a class="dropdown-item p-3 d-flex align-items-center gap-3"
+                                    style="border-radius: 12px;" href="revenue-analytics.html">
+                                    <i class="bi bi-bar-chart-line fs-5 text-primary"></i>
+                                    <div>
+                                        <div class="fw-bold">Analytics</div>
+                                        <small class="text-muted">Premium Insights</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a class="dropdown-item p-3 d-flex align-items-center gap-3"
+                                    style="border-radius: 12px;" href="manage-bookings.html">
+                                    <i class="bi bi-calendar-check fs-5 text-primary"></i>
+                                    <div>
+                                        <div class="fw-bold">Manage Bookings</div>
+                                        <small class="text-muted">Requests & List</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item p-3 d-flex align-items-center gap-3"
+                                    style="border-radius: 12px;" href="add-hostel.html">
+                                    <i class="bi bi-plus-circle fs-5 text-primary"></i>
+                                    <div>
+                                        <div class="fw-bold">Add New Hostel</div>
+                                        <small class="text-muted">Post Property</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -529,18 +585,27 @@
             <div class="search-wrapper">
                 <div class="search-input-group">
                     <i class="bi bi-search"></i>
-                    <input type="text" placeholder="Search hostel name or area">
+                    <input type="text" placeholder="Search hostels..." id="searchKeyword">
                 </div>
                 <div class="search-divider"></div>
                 <div class="search-input-group">
-                    <i class="bi bi-mortarboard"></i>
-                    <select>
+                    <i class="bi bi-geo-alt"></i>
+                    <select class="form-select border-0 bg-transparent p-0" id="searchLocation">
                         <option value="">Near Institute</option>
                         <option value="gti-lahore">GTI Lahore</option>
-                        <option value="gti-faisalabad">GTI Faisalabad</option>
-                        <option value="gti-rawalpindi">GTI Rawalpindi</option>
-                        <option value="gti-multan">GTI Multan</option>
+                        <option value="psti-lahore">PSTI Lahore</option>
+                        <option value="gstc-lahore">GSTC Lahore</option>
+                        <option value="gvi-lahore">GVI Lahore</option>
                     </select>
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-input-group" style="flex: 0 0 auto;">
+                    <i class="bi bi-cash-stack"></i>
+                    <div class="price-range">
+                        <input type="number" class="price-input" placeholder="Min" value="5000">
+                        <span class="text-muted">-</span>
+                        <input type="number" class="price-input" placeholder="Max" value="15000">
+                    </div>
                 </div>
                 <button class="btn-custom btn-primary btn-lg">
                     <i class="bi bi-search"></i>
@@ -566,13 +631,28 @@
                         <button class="filter-clear">Clear All</button>
                     </div>
 
-                    <div class="filter-group">
-                        <div class="filter-group-title">Price Range (Monthly)</div>
-                        <div class="price-range">
-                            <input type="number" class="price-input" placeholder="Min" value="5000">
-                            <span>-</span>
-                            <input type="number" class="price-input" placeholder="Max" value="15000">
-                        </div>
+
+                    <div class="filter-group-title">Owner Quick Actions</div>
+                    <div class="d-grid gap-2 mb-4">
+                        <a href="add-hostel.html" class="btn-custom btn-primary btn-sm w-100 justify-content-center">
+                            <i class="bi bi-plus-circle"></i>
+                            Add New Hostel
+                        </a>
+                        <a href="manage-bookings.html"
+                            class="btn-custom btn-outline-primary btn-sm w-100 justify-content-center">
+                            <i class="bi bi-calendar-check"></i>
+                            View Bookings
+                        </a>
+                        <a href="hostel-reviews.html"
+                            class="btn-custom btn-outline-primary btn-sm w-100 justify-content-center">
+                            <i class="bi bi-star"></i>
+                            User Reviews
+                        </a>
+                        <a href="payments.html"
+                            class="btn-custom btn-outline-primary btn-sm w-100 justify-content-center">
+                            <i class="bi bi-cash-stack"></i>
+                            Revenue
+                        </a>
                     </div>
 
                     <div class="filter-group">

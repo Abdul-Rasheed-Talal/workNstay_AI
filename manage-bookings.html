@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage Bookings - WorkNStay AI">
+    <title>Manage Bookings - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i>
+                        Dashboard
+                    </a>
+                    <a href="add-hostel.html" class="nav-item">
+                        <i class="bi bi-plus-circle"></i>
+                        Add New Hostel
+                    </a>
+                    <a href="manage-hostels.html" class="nav-item">
+                        <i class="bi bi-building"></i>
+                        My Hostels
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Operations</div>
+                    <a href="manage-bookings.html" class="nav-item active">
+                        <i class="bi bi-calendar-check"></i>
+                        Manage Bookings
+                        <span class="badge">5</span>
+                    </a>
+                    <a href="availability-calendar.html" class="nav-item">
+                        <i class="bi bi-calendar3"></i>
+                        Availability
+                    </a>
+                    <a href="tenants.html" class="nav-item">
+                        <i class="bi bi-people"></i>
+                        Tenants
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Enterprise</div>
+                    <a href="revenue-analytics.html" class="nav-item">
+                        <i class="bi bi-bar-chart-line"></i>
+                        Revenue Analytics
+                    </a>
+                    <a href="inventory.html" class="nav-item">
+                        <i class="bi bi-box-seam"></i>
+                        Inventory
+                    </a>
+                    <a href="payments.html" class="nav-item">
+                        <i class="bi bi-credit-card"></i>
+                        Payments
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Feedback</div>
+                    <a href="hostel-reviews.html" class="nav-item">
+                        <i class="bi bi-chat-quote"></i>
+                        Reviews
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-gear"></i>
+                        Settings
+                    </a>
+                    <a href="login.html" class="nav-item">
+                        <i class="bi bi-box-arrow-left"></i>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">AK</div>
+                    <div class="user-info">
+                        <div class="user-name">Ahmed Khan</div>
+                        <div class="user-role">Hostel Owner</div>
+                    </div>
+                    <i class="bi bi-chevron-expand text-muted"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Manage Bookings</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-btn">
+                        <i class="bi bi-bell"></i>
+                    </button>
+                    <button class="topbar-btn">
+                        <i class="bi bi-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Filter Tabs -->
+                <div class="filter-tabs fade-in">
+                    <button class="filter-tab active" onclick="filterBookings('all', this)">
+                        <i class="bi bi-list-ul"></i>
+                        All Bookings
+                        <span class="count">12</span>
+                    </button>
+                    <button class="filter-tab" onclick="filterBookings('pending', this)">
+                        <i class="bi bi-clock"></i>
+                        Pending
+                        <span class="count">5</span>
+                    </button>
+                    <button class="filter-tab" onclick="filterBookings('approved', this)">
+                        <i class="bi bi-check-circle"></i>
+                        Approved
+                        <span class="count">4</span>
+                    </button>
+                    <button class="filter-tab" onclick="filterBookings('rejected', this)">
+                        <i class="bi bi-x-circle"></i>
+                        Rejected
+                        <span class="count">2</span>
+                    </button>
+                    <button class="filter-tab" onclick="filterBookings('checked-in', this)">
+                        <i class="bi bi-house-check"></i>
+                        Checked In
+                        <span class="count">1</span>
+                    </button>
+                </div>
+
+                <!-- Booking Requests Table -->
+                <div class="content-card fade-in delay-1">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title">
+                            <i class="bi bi-calendar-check text-primary"></i>
+                            Booking Requests
+                        </h2>
+                        <div class="search-box">
+                            <i class="bi bi-search"></i>
+                            <input type="text" placeholder="Search bookings...">
+                        </div>
+                    </div>
+
+                    <table class="booking-table">
+                        <thead>
+                            <tr>
+                                <th>Tenant</th>
+                                <th>Hostel / Room</th>
+                                <th>Booking Date</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-status="pending">
+                                <td>
+                                    <div class="tenant-info">
+                                        <div class="tenant-avatar">MH</div>
+                                        <div>
+                                            <div class="tenant-name">Muhammad Hassan</div>
+                                            <div class="tenant-email">hassan@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="hostel-info">
+                                        <div class="hostel-name">Green View Hostel</div>
+                                        <div class="room-type">Shared Room (3 beds)</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="booking-date">
+                                        Dec 20, 2024
+                                        <small>Move-in: Jan 5, 2025</small>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge pending"><i class="bi bi-clock"></i> Pending</span></td>
+                                <td><span class="payment-badge pending"><i class="bi bi-hourglass-split"></i>
+                                        Awaiting</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn approve" title="Approve"
+                                            onclick="approveBooking(this)"><i class="bi bi-check-lg"></i></button>
+                                        <button class="action-btn reject" title="Reject"
+                                            onclick="rejectBooking(this)"><i class="bi bi-x-lg"></i></button>
+                                        <button class="action-btn message" title="Message"><i
+                                                class="bi bi-chat-dots"></i></button>
+                                        <button class="action-btn view" title="View Details"><i
+                                                class="bi bi-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="pending">
+                                <td>
+                                    <div class="tenant-info">
+                                        <div class="tenant-avatar"
+                                            style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">AA</div>
+                                        <div>
+                                            <div class="tenant-name">Ali Ahmed</div>
+                                            <div class="tenant-email">ali.ahmed@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="hostel-info">
+                                        <div class="hostel-name">City Center Hostel</div>
+                                        <div class="room-type">Twin Sharing</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="booking-date">
+                                        Dec 19, 2024
+                                        <small>Move-in: Jan 1, 2025</small>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge pending"><i class="bi bi-clock"></i> Pending</span></td>
+                                <td><span class="payment-badge pending"><i class="bi bi-hourglass-split"></i>
+                                        Awaiting</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn approve" title="Approve"
+                                            onclick="approveBooking(this)"><i class="bi bi-check-lg"></i></button>
+                                        <button class="action-btn reject" title="Reject"
+                                            onclick="rejectBooking(this)"><i class="bi bi-x-lg"></i></button>
+                                        <button class="action-btn message" title="Message"><i
+                                                class="bi bi-chat-dots"></i></button>
+                                        <button class="action-btn view" title="View Details"><i
+                                                class="bi bi-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="approved">
+                                <td>
+                                    <div class="tenant-info">
+                                        <div class="tenant-avatar"
+                                            style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">ZH</div>
+                                        <div>
+                                            <div class="tenant-name">Zainab Hussain</div>
+                                            <div class="tenant-email">zainab@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="hostel-info">
+                                        <div class="hostel-name">Green View Hostel</div>
+                                        <div class="room-type">Single Room - Room 205</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="booking-date">
+                                        Dec 15, 2024
+                                        <small>Move-in: Dec 22, 2024</small>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge approved"><i class="bi bi-check-circle"></i>
+                                        Approved</span></td>
+                                <td><span class="payment-badge paid"><i class="bi bi-check-circle"></i> Paid</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn message" title="Message"><i
+                                                class="bi bi-chat-dots"></i></button>
+                                        <button class="action-btn view" title="View Details"><i
+                                                class="bi bi-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="pending">
+                                <td>
+                                    <div class="tenant-info">
+                                        <div class="tenant-avatar"
+                                            style="background: linear-gradient(135deg, #ef4444, #f87171);">UK</div>
+                                        <div>
+                                            <div class="tenant-name">Usman Khan</div>
+                                            <div class="tenant-email">usman.k@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="hostel-info">
+                                        <div class="hostel-name">Model Town Hostel</div>
+                                        <div class="room-type">Shared Room (3 beds)</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="booking-date">
+                                        Dec 18, 2024
+                                        <small>Move-in: Jan 10, 2025</small>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge pending"><i class="bi bi-clock"></i> Pending</span></td>
+                                <td><span class="payment-badge pending"><i class="bi bi-hourglass-split"></i>
+                                        Awaiting</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn approve" title="Approve"
+                                            onclick="approveBooking(this)"><i class="bi bi-check-lg"></i></button>
+                                        <button class="action-btn reject" title="Reject"
+                                            onclick="rejectBooking(this)"><i class="bi bi-x-lg"></i></button>
+                                        <button class="action-btn message" title="Message"><i
+                                                class="bi bi-chat-dots"></i></button>
+                                        <button class="action-btn view" title="View Details"><i
+                                                class="bi bi-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="rejected">
+                                <td>
+                                    <div class="tenant-info">
+                                        <div class="tenant-avatar"
+                                            style="background: linear-gradient(135deg, #6366f1, #818cf8);">FZ</div>
+                                        <div>
+                                            <div class="tenant-name">Fatima Zahra</div>
+                                            <div class="tenant-email">fatima.z@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="hostel-info">
+                                        <div class="hostel-name">Green View Hostel</div>
+                                        <div class="room-type">Twin Sharing</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="booking-date">
+                                        Dec 10, 2024
+                                        <small>Move-in: Dec 20, 2024</small>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge rejected"><i class="bi bi-x-circle"></i> Rejected</span>
+                                </td>
+                                <td><span class="payment-badge pending"><i class="bi bi-dash"></i> N/A</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn view" title="View Details"><i
+                                                class="bi bi-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="checked-in">
+                                <td>
+                                    <div class="tenant-info">
+                                        <div class="tenant-avatar"
+                                            style="background: linear-gradient(135deg, #10b981, #34d399);">SA</div>
+                                        <div>
+                                            <div class="tenant-name">Sara Ali</div>
+                                            <div class="tenant-email">sara.ali@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="hostel-info">
+                                        <div class="hostel-name">City Center Hostel</div>
+                                        <div class="room-type">Single Room - Room 102</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="booking-date">
+                                        Nov 28, 2024
+                                        <small>Checked in: Dec 1, 2024</small>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge checked-in"><i class="bi bi-house-check"></i> Checked
+                                        In</span></td>
+                                <td><span class="payment-badge paid"><i class="bi bi-check-circle"></i> Paid</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn message" title="Message"><i
+                                                class="bi bi-chat-dots"></i></button>
+                                        <button class="action-btn view" title="View Details"><i
+                                                class="bi bi-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Active Tenants Section -->
+                <div class="tenants-section fade-in delay-2">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="bi bi-people text-primary"></i>
+                            Active Tenants with Room Assignment
+                        </h2>
+                    </div>
+
+                    <div class="tenant-cards">
+                        <div class="tenant-card">
+                            <div class="tenant-card-header">
+                                <div>
+                                    <div class="tenant-card-avatar">SA</div>
+                                </div>
+                                <span class="payment-badge paid"><i class="bi bi-check-circle"></i> Paid</span>
+                            </div>
+                            <div class="tenant-card-name">Sara Ali</div>
+                            <div class="tenant-card-course">BSc Computer Science • COMSATS</div>
+
+                            <div class="tenant-card-details">
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-building"></i> Hostel</span>
+                                    <span class="tenant-detail-value">City Center</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-door-open"></i> Room</span>
+                                    <span class="tenant-detail-value">Room 102</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-calendar"></i> Since</span>
+                                    <span class="tenant-detail-value">Dec 1, 2024</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-cash"></i> Rent</span>
+                                    <span class="tenant-detail-value">Rs. 15,000/mo</span>
+                                </div>
+                            </div>
+
+                            <div class="tenant-card-footer">
+                                <button class="tenant-btn secondary"><i class="bi bi-chat-dots"></i> Message</button>
+                                <button class="tenant-btn primary"><i class="bi bi-eye"></i> View</button>
+                            </div>
+                        </div>
+
+                        <div class="tenant-card">
+                            <div class="tenant-card-header">
+                                <div>
+                                    <div class="tenant-card-avatar"
+                                        style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">ZH</div>
+                                </div>
+                                <span class="payment-badge paid"><i class="bi bi-check-circle"></i> Paid</span>
+                            </div>
+                            <div class="tenant-card-name">Zainab Hussain</div>
+                            <div class="tenant-card-course">DAE Civil • GTI Lahore</div>
+
+                            <div class="tenant-card-details">
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-building"></i> Hostel</span>
+                                    <span class="tenant-detail-value">Green View</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-door-open"></i> Room</span>
+                                    <span class="tenant-detail-value">Room 205</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-calendar"></i> Since</span>
+                                    <span class="tenant-detail-value">Dec 22, 2024</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-cash"></i> Rent</span>
+                                    <span class="tenant-detail-value">Rs. 15,000/mo</span>
+                                </div>
+                            </div>
+
+                            <div class="tenant-card-footer">
+                                <button class="tenant-btn secondary"><i class="bi bi-chat-dots"></i> Message</button>
+                                <button class="tenant-btn primary"><i class="bi bi-eye"></i> View</button>
+                            </div>
+                        </div>
+
+                        <div class="tenant-card">
+                            <div class="tenant-card-header">
+                                <div>
+                                    <div class="tenant-card-avatar"
+                                        style="background: linear-gradient(135deg, #6366f1, #818cf8);">IM</div>
+                                </div>
+                                <span class="payment-badge partial"><i class="bi bi-dash-circle"></i> Partial</span>
+                            </div>
+                            <div class="tenant-card-name">Imran Malik</div>
+                            <div class="tenant-card-course">DAE Electrical • TEVTA Lahore</div>
+
+                            <div class="tenant-card-details">
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-building"></i> Hostel</span>
+                                    <span class="tenant-detail-value">Model Town</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-door-open"></i> Room</span>
+                                    <span class="tenant-detail-value">Room 308</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-calendar"></i> Since</span>
+                                    <span class="tenant-detail-value">Nov 15, 2024</span>
+                                </div>
+                                <div class="tenant-detail-item">
+                                    <span class="tenant-detail-label"><i class="bi bi-cash"></i> Rent</span>
+                                    <span class="tenant-detail-value">Rs. 8,000/mo</span>
+                                </div>
+                            </div>
+
+                            <div class="tenant-card-footer">
+                                <button class="tenant-btn secondary"><i class="bi bi-chat-dots"></i> Message</button>
+                                <button class="tenant-btn primary"><i class="bi bi-eye"></i> View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <div class="nav-container">
+            <a href="hostel-owner-dashboard.html" class="mobile-nav-item">
+                <i class="bi bi-grid-1x2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="manage-bookings.html" class="mobile-nav-item active">
+                <i class="bi bi-calendar-check-fill"></i>
+                <span>Bookings</span>
+                <span class="nav-badge">5</span>
+            </a>
+            <a href="add-hostel.html" class="mobile-nav-item">
+                <i class="bi bi-plus-circle"></i>
+                <span>Add</span>
+            </a>
+            <a href="hostel-reviews.html" class="mobile-nav-item">
+                <i class="bi bi-chat-quote"></i>
+                <span>Reviews</span>
+            </a>
+            <a href="student-hostel-dashboard.html" class="mobile-nav-item">
+                <i class="bi bi-person"></i>
+                <span>Student</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>

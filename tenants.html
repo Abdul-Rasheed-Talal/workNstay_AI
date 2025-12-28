@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage Your Tenants - WorkNStay AI">
+    <title>Tenants Management - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i>
+                        Dashboard
+                    </a>
+                    <a href="add-hostel.html" class="nav-item">
+                        <i class="bi bi-plus-circle"></i>
+                        Add New Hostel
+                    </a>
+                    <a href="manage-hostels.html" class="nav-item">
+                        <i class="bi bi-building"></i>
+                        My Hostels
+                        <span class="badge">3</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Bookings</div>
+                    <a href="manage-bookings.html" class="nav-item">
+                        <i class="bi bi-calendar-check"></i>
+                        Manage Bookings
+                        <span class="badge">5</span>
+                    </a>
+                    <a href="tenants.html" class="nav-item active">
+                        <i class="bi bi-people"></i>
+                        Tenants
+                    </a>
+                    <a href="payments.html" class="nav-item">
+                        <i class="bi bi-credit-card"></i>
+                        Payments
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Feedback</div>
+                    <a href="hostel-reviews.html" class="nav-item">
+                        <i class="bi bi-chat-quote"></i>
+                        Reviews
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-star"></i>
+                        Ratings
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-gear"></i>
+                        Settings
+                    </a>
+                    <a href="login.html" class="nav-item">
+                        <i class="bi bi-box-arrow-left"></i>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">AK</div>
+                    <div class="user-info">
+                        <div class="user-name">Ahmed Khan</div>
+                        <div class="user-role">Hostel Owner</div>
+                    </div>
+                    <i class="bi bi-chevron-expand text-muted"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Tenants Directory</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-box d-none d-lg-block">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search tenants by name, hostel or ID...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="tenant-list-card fade-in">
+                    <div class="tenant-list-header">
+                        <h2 class="section-title">All Active Tenants</h2>
+                        <div class="d-flex gap-2">
+                            <select class="form-select form-select-sm" style="width: 180px;">
+                                <option value="">All Hostels</option>
+                                <option value="1">Green View</option>
+                                <option value="2">City Center</option>
+                            </select>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="exportData('Tenants List')"><i
+                                    class="bi bi-download"></i>
+                                Export</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="tenant-table">
+                            <thead>
+                                <tr>
+                                    <th>Tenant Details</th>
+                                    <th>Hostel & Room</th>
+                                    <th>Join Date</th>
+                                    <th>Rent Status</th>
+                                    <th>Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar avatar-md bg-primary-subtle text-primary fw-bold"
+                                                style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                                SA</div>
+                                            <div>
+                                                <div class="fw-bold text-dark">Sara Ali</div>
+                                                <div class="small text-muted">ID: #T-9821</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-medium">City Center Hostel</div>
+                                        <div class="small text-muted">Room 102 (Single)</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-dark">Dec 1, 2024</div>
+                                        <div class="small text-muted">6 months period</div>
+                                    </td>
+                                    <td>
+                                        <span class="payment-status paid"><i class="bi bi-check-circle-fill"></i> Up to
+                                            Date</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-icon btn-sm btn-light border" title="WhatsApp"><i
+                                                    class="bi bi-whatsapp"></i></button>
+                                            <button class="btn btn-icon btn-sm btn-light border" title="Call"><i
+                                                    class="bi bi-telephone"></i></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light border" type="button"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>
+                                                        View Profile</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>
+                                                        Edit Record</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item text-danger" href="#"><i
+                                                            class="bi bi-box-arrow-right me-2"></i> Terminate Lease</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Repeat for other tenants -->
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar avatar-md bg-warning-subtle text-warning fw-bold"
+                                                style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                                ZH</div>
+                                            <div>
+                                                <div class="fw-bold text-dark">Zainab Hussain</div>
+                                                <div class="small text-muted">ID: #T-8842</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-medium">Green View Hostel</div>
+                                        <div class="small text-muted">Room 205 (Shared)</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-dark">Dec 22, 2024</div>
+                                        <div class="small text-muted">1 year period</div>
+                                    </td>
+                                    <td>
+                                        <span class="payment-status paid"><i class="bi bi-check-circle-fill"></i> Up to
+                                            Date</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-icon btn-sm btn-light border" title="WhatsApp"><i
+                                                    class="bi bi-whatsapp"></i></button>
+                                            <button class="btn btn-icon btn-sm btn-light border" title="Call"><i
+                                                    class="bi bi-telephone"></i></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light border" type="button"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>
+                                                        View Profile</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>
+                                                        Edit Record</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item text-danger" href="#"><i
+                                                            class="bi bi-box-arrow-right me-2"></i> Terminate Lease</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar avatar-md bg-info-subtle text-info fw-bold"
+                                                style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                                IM</div>
+                                            <div>
+                                                <div class="fw-bold text-dark">Imran Malik</div>
+                                                <div class="small text-muted">ID: #T-7751</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-medium">Model Town Hostel</div>
+                                        <div class="small text-muted">Room 308 (Shared)</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-dark">Nov 15, 2024</div>
+                                        <div class="small text-muted">Monthly</div>
+                                    </td>
+                                    <td>
+                                        <span class="payment-status partial"><i
+                                                class="bi bi-exclamation-circle-fill"></i> Pending Rs. 2,000</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-icon btn-sm btn-light border" title="WhatsApp"><i
+                                                    class="bi bi-whatsapp"></i></button>
+                                            <button class="btn btn-icon btn-sm btn-light border" title="Call"><i
+                                                    class="bi bi-telephone"></i></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light border" type="button"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>
+                                                        View Profile</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>
+                                                        Edit Record</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item text-danger" href="javascript:void(0)"
+                                                        onclick="terminateLease('T-XXXXXXXX')"><i
+                                                            class="bi bi-box-arrow-right me-2"></i> Terminate Lease</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <div class="nav-container">
+            <a href="hostel-owner-dashboard.html" class="mobile-nav-item">
+                <i class="bi bi-grid-1x2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="manage-bookings.html" class="mobile-nav-item">
+                <i class="bi bi-calendar-check"></i>
+                <span>Bookings</span>
+            </a>
+            <a href="add-hostel.html" class="mobile-nav-item">
+                <i class="bi bi-plus-circle"></i>
+                <span>Add</span>
+            </a>
+            <a href="tenants.html" class="mobile-nav-item active">
+                <i class="bi bi-people-fill"></i>
+                <span>Tenants</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>

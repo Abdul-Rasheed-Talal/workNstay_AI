@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inventory & Maintenance - WorkNStay AI">
+    <title>Inventory & Maintenance - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .inventory-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--gray-100);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .inventory-table-card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--gray-100);
+            overflow: hidden;
+        }
+
+        .maintenance-priority {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .priority-high {
+            background: var(--error);
+        }
+
+        .priority-medium {
+            background: var(--accent-gold);
+        }
+
+        .priority-low {
+            background: var(--primary);
+        }
+
+        .item-icon-bg {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        @media (max-width: 992px) {
+            .inventory-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .inventory-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i> Dashboard
+                    </a>
+                    <a href="availability-calendar.html" class="nav-item">
+                        <i class="bi bi-calendar3"></i> Availability
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Enterprise</div>
+                    <a href="revenue-analytics.html" class="nav-item">
+                        <i class="bi bi-bar-chart-line"></i> Revenue Analytics
+                    </a>
+                    <a href="inventory.html" class="nav-item active">
+                        <i class="bi bi-box-seam"></i> Inventory
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Inventory & Maintenance</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn-custom btn-primary btn-sm">
+                        <i class="bi bi-plus-lg"></i> Add New Item
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="inventory-stats fade-in">
+                    <div class="item-card">
+                        <div class="item-icon-bg bg-primary-subtle text-primary">
+                            <i class="bi bi-lamp"></i>
+                        </div>
+                        <div>
+                            <div class="h5 fw-bold mb-0">124</div>
+                            <div class="text-muted small">Total Assets</div>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon-bg bg-warning-subtle text-warning">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <div>
+                            <div class="h5 fw-bold mb-0">8</div>
+                            <div class="text-muted small">Active Repairs</div>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon-bg bg-success-subtle text-success">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div>
+                            <div class="h5 fw-bold mb-0">92%</div>
+                            <div class="text-muted small">Operational Rate</div>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon-bg bg-danger-subtle text-danger">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <div class="h5 fw-bold mb-0">3</div>
+                            <div class="text-muted small">Urgent Issues</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inventory-table-card fade-in delay-1">
+                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                        <h3 class="h5 fw-bold mb-0">Asset Inventory List</h3>
+                        <div class="d-flex gap-2">
+                            <input type="text" class="form-control form-control-sm" placeholder="Search assets...">
+                            <select class="form-select form-select-sm" style="width: auto;">
+                                <option>All Categories</option>
+                                <option>Electronics</option>
+                                <option>Furniture</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4">Asset Name</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Condition</th>
+                                    <th>Status</th>
+                                    <th class="text-end px-4">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-4">
+                                        <div class="fw-bold">Haier AC 1.5 Ton</div>
+                                        <small class="text-muted">ID: ASSET-8821</small>
+                                    </td>
+                                    <td>Electronics</td>
+                                    <td>Room 202</td>
+                                    <td><span class="badge-custom badge-verified">Perfect</span></td>
+                                    <td><span class="status-badge confirmed">Operational</span></td>
+                                    <td class="text-end px-4">
+                                        <button class="btn-custom btn-icon"><i class="bi bi-pencil"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4">
+                                        <div class="fw-bold">Wooden Study Desk</div>
+                                        <small class="text-muted">ID: ASSET-9912</small>
+                                    </td>
+                                    <td>Furniture</td>
+                                    <td>Room 101</td>
+                                    <td><span class="badge-custom badge-primary"
+                                            style="background: #fff7ed; color: #c2410c;">Minor Scratches</span></td>
+                                    <td><span class="status-badge confirmed">Operational</span></td>
+                                    <td class="text-end px-4">
+                                        <button class="btn-custom btn-icon"><i class="bi bi-pencil"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4">
+                                        <div class="fw-bold">Water Dispenser</div>
+                                        <small class="text-muted">ID: ASSET-4432</small>
+                                    </td>
+                                    <td>Appliances</td>
+                                    <td>Common Hall</td>
+                                    <td><span class="badge-custom" style="background: #fef2f2; color: #ef4444;">Needs
+                                            Repair</span></td>
+                                    <td><span class="status-badge pending">Under Maintenance</span></td>
+                                    <td class="text-end px-4">
+                                        <button class="btn-custom btn-outline-danger btn-sm">Log Repair</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>

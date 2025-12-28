@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Revenue Analytics - WorkNStay AI">
+    <title>Revenue Analytics - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--gray-100);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--gray-100);
+            position: relative;
+        }
+
+        .bar {
+            flex: 1;
+            background: var(--primary);
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            transition: height 1s ease-out;
+            min-width: 30px;
+        }
+
+        .bar::after {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--gray-500);
+            white-space: nowrap;
+        }
+
+        .growth-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .growth-up {
+            background: #ecfdf5;
+            color: #10b981;
+        }
+
+        .growth-down {
+            background: #fef2f2;
+            color: #ef4444;
+        }
+
+        .stat-mini-card {
+            padding: 20px;
+            background: var(--gray-50);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        @media (max-width: 992px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i> Dashboard
+                    </a>
+                    <a href="availability-calendar.html" class="nav-item">
+                        <i class="bi bi-calendar3"></i> Availability
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Enterprise</div>
+                    <a href="revenue-analytics.html" class="nav-item active">
+                        <i class="bi bi-bar-chart-line"></i> Revenue Analytics
+                    </a>
+                    <a href="inventory.html" class="nav-item">
+                        <i class="bi bi-box-seam"></i> Inventory
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Revenue Analytics</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn-custom btn-outline-primary btn-sm">
+                        <i class="bi bi-download"></i> Export PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="analytics-grid fade-in">
+                    <div class="chart-card">
+                        <div class="text-muted small mb-1">Total Revenue (Dec)</div>
+                        <div class="h3 fw-bold mb-2">Rs. 458,200</div>
+                        <span class="growth-badge growth-up"><i class="bi bi-graph-up-arrow"></i> +12% vs last
+                            month</span>
+                    </div>
+                    <div class="chart-card">
+                        <div class="text-muted small mb-1">Average Occupancy</div>
+                        <div class="h3 fw-bold mb-2">94.2%</div>
+                        <span class="growth-badge growth-up"><i class="bi bi-graph-up-arrow"></i> +5% vs city avg</span>
+                    </div>
+                    <div class="chart-card">
+                        <div class="text-muted small mb-1">Estimated Net Profit</div>
+                        <div class="h3 fw-bold mb-2">Rs. 285,000</div>
+                        <span class="growth-badge growth-down"><i class="bi bi-graph-down-arrow"></i> -2%
+                            (Maintenance)</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="chart-card fade-in delay-1">
+                            <div class="chart-header">
+                                <h3 class="h5 fw-bold mb-0">Revenue Trend (Last 6 Months)</h3>
+                                <select class="form-select form-select-sm" style="width: auto;">
+                                    <option>Monthly</option>
+                                    <option>Weekly</option>
+                                </select>
+                            </div>
+                            <div class="chart-placeholder">
+                                <div class="bar" style="height: 60%;" data-value="320k"><span
+                                        class="bar-label">July</span></div>
+                                <div class="bar" style="height: 75%;" data-value="380k"><span
+                                        class="bar-label">Aug</span></div>
+                                <div class="bar" style="height: 70%;" data-value="350k"><span
+                                        class="bar-label">Sept</span></div>
+                                <div class="bar" style="height: 85%;" data-value="410k"><span
+                                        class="bar-label">Oct</span></div>
+                                <div class="bar" style="height: 80%;" data-value="400k"><span
+                                        class="bar-label">Nov</span></div>
+                                <div class="bar" style="height: 95%;" data-value="458k"><span
+                                        class="bar-label">Dec</span></div>
+                            </div>
+                            <div class="mt-5 pt-3">
+                                <p class="text-muted small"><i class="bi bi-info-circle me-1"></i> Highest revenue
+                                    recorded in December due to winter intake session.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="chart-card fade-in delay-2">
+                            <h3 class="h5 fw-bold mb-4">Revenue by Hostel</h3>
+                            <div class="d-grid gap-3">
+                                <div class="stat-mini-card">
+                                    <div class="text-muted small">City Center Hostel</div>
+                                    <div class="fw-bold fs-5">Rs. 285,000</div>
+                                    <div class="progress mt-2" style="height: 6px;">
+                                        <div class="progress-bar bg-primary" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat-mini-card">
+                                    <div class="text-muted small">Green View Hostel</div>
+                                    <div class="fw-bold fs-5">Rs. 173,200</div>
+                                    <div class="progress mt-2" style="height: 6px;">
+                                        <div class="progress-bar bg-success" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card fade-in delay-3"
+                            style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; border: none;">
+                            <h3 class="h5 fw-bold mb-3 text-white">AI Insights</h3>
+                            <p class="small opacity-75">Based on current occupancy trends, we project a 15% increase in
+                                demand next month for private rooms.</p>
+                            <a href="#" class="btn-custom btn-white btn-sm mt-2 w-100 justify-content-center">Full
+                                Report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage Payments and Revenue - WorkNStay AI">
+    <title>Payments & Revenue - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i>
+                        Dashboard
+                    </a>
+                    <a href="add-hostel.html" class="nav-item">
+                        <i class="bi bi-plus-circle"></i>
+                        Add New Hostel
+                    </a>
+                    <a href="manage-hostels.html" class="nav-item">
+                        <i class="bi bi-building"></i>
+                        My Hostels
+                        <span class="badge">3</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Bookings</div>
+                    <a href="manage-bookings.html" class="nav-item">
+                        <i class="bi bi-calendar-check"></i>
+                        Manage Bookings
+                        <span class="badge">5</span>
+                    </a>
+                    <a href="tenants.html" class="nav-item">
+                        <i class="bi bi-people"></i>
+                        Tenants
+                    </a>
+                    <a href="payments.html" class="nav-item active">
+                        <i class="bi bi-credit-card"></i>
+                        Payments
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Feedback</div>
+                    <a href="hostel-reviews.html" class="nav-item">
+                        <i class="bi bi-chat-quote"></i>
+                        Reviews
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                    <a href="login.html" class="nav-item">
+                        <i class="bi bi-box-arrow-left"></i>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar text-white bg-primary">AK</div>
+                    <div class="user-info">
+                        <div class="user-name">Ahmed Khan</div>
+                        <div class="user-role">Hostel Owner</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Financial Overview</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-plus-lg me-2"></i> Record Payment
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Stats Summary -->
+                <div class="stats-grid">
+                    <div class="finance-card fade-in">
+                        <div class="finance-icon bg-success-subtle text-success">
+                            <i class="bi bi-wallet2"></i>
+                        </div>
+                        <div class="text-muted small">Total Revenue</div>
+                        <div class="h3 fw-bold mb-0">Rs. 450,000</div>
+                        <div class="small text-success mt-2">
+                            <i class="bi bi-arrow-up"></i> 12% from last month
+                        </div>
+                    </div>
+                    <div class="finance-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="finance-icon bg-warning-subtle text-warning">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div class="text-muted small">Pending Collection</div>
+                        <div class="h3 fw-bold mb-0">Rs. 32,500</div>
+                        <div class="small text-danger mt-2">
+                            8 payments overdue
+                        </div>
+                    </div>
+                    <div class="finance-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="finance-icon bg-primary-subtle text-primary">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+                        <div class="text-muted small">This Month Revenue</div>
+                        <div class="h3 fw-bold mb-0">Rs. 85,000</div>
+                        <div class="small text-muted mt-2">
+                            Target: Rs. 100k
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="transaction-list fade-in" style="animation-delay: 0.3s;">
+                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                        <h2 class="section-title mb-0">Recent Transactions</h2>
+                        <div class="d-flex gap-2">
+                            <input type="month" class="form-control form-control-sm" value="2024-12">
+                            <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-filter"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table tenant-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Transaction ID</th>
+                                    <th>Tenant / Property</th>
+                                    <th>Date</th>
+                                    <th>Method</th>
+                                    <th>Amount</th>
+                                    <th class="pe-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4 fw-medium text-dark">#TXN-4592</td>
+                                    <td>
+                                        <div class="fw-bold">Sara Ali</div>
+                                        <div class="small text-muted">City Center Hostel</div>
+                                    </td>
+                                    <td>Dec 28, 2024</td>
+                                    <td>
+                                        <div class="payment-method">
+                                            <i class="bi bi-bank text-primary"></i> Bank Transfer
+                                        </div>
+                                    </td>
+                                    <td class="amount-positive">Rs. 15,000</td>
+                                    <td><span class="payment-status paid">Successful</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4 fw-medium text-dark">#TXN-4588</td>
+                                    <td>
+                                        <div class="fw-bold">Imran Malik</div>
+                                        <div class="small text-muted">Model Town Hostel</div>
+                                    </td>
+                                    <td>Dec 26, 2024</td>
+                                    <td>
+                                        <div class="payment-method">
+                                            <i class="bi bi-phone text-success"></i> JazzCash
+                                        </div>
+                                    </td>
+                                    <td class="amount-positive">Rs. 8,500</td>
+                                    <td><span class="payment-status paid">Successful</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4 fw-medium text-dark">#TXN-4585</td>
+                                    <td>
+                                        <div class="fw-bold">Zainab Hussain</div>
+                                        <div class="small text-muted">Green View Hostel</div>
+                                    </td>
+                                    <td>Dec 25, 2024</td>
+                                    <td>
+                                        <div class="payment-method">
+                                            <i class="bi bi-phone text-danger"></i> EasyPaisa
+                                        </div>
+                                    </td>
+                                    <td class="amount-positive">Rs. 12,000</td>
+                                    <td><span class="payment-status paid">Successful</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <div class="nav-container">
+            <a href="hostel-owner-dashboard.html" class="mobile-nav-item">
+                <i class="bi bi-grid-1x2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="manage-bookings.html" class="mobile-nav-item">
+                <i class="bi bi-calendar-check"></i>
+                <span>Bookings</span>
+            </a>
+            <a href="add-hostel.html" class="mobile-nav-item">
+                <i class="bi bi-plus-circle"></i>
+                <span>Add</span>
+            </a>
+            <a href="tenants.html" class="mobile-nav-item">
+                <i class="bi bi-people"></i>
+                <span>Tenants</span>
+            </a>
+            <a href="payments.html" class="mobile-nav-item active">
+                <i class="bi bi-credit-card-fill"></i>
+                <span>Finance</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>

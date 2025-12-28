@@ -186,13 +186,29 @@ git push origin feature/employer-module
 3. **Create Booking Management** (`manage-bookings.html`)
    - Incoming booking requests
    - Approve/reject actions
-   - Tenant list with room assignments
+   - Detailed booking view (`booking-details.html`)
    - Payment status tracking
 
-4. **Add Reviews Response Feature** (`hostel-reviews.html`)
-   - View all reviews
-   - Reply to reviews
-   - Report fake reviews
+4. **Tenant Management** (`tenants.html`, `tenant-profile.html`)
+   - List of all active and past tenants
+   - Individual tenant profiles with stay history
+   - Document management and trust verification
+
+5. **Hostel Portal Refinement** (`hostels.html`)
+   - Refined search hero with integrated price range
+   - Professional filter sidebar cleanup
+   - Verified hostel badges and premium animations
+
+6. **Reviews & Feedback** (`hostel-reviews.html`)
+   - View all reviews with AI sentiment analysis
+   - Reply to reviews and manage reputation
+   - Report fake or abusive reviews
+
+7. **Professional Enterprise Features (Advanced)**
+   - **Availability Calendar** (`availability-calendar.html`): Interactive visual tracker for room/bed occupancy.
+   - **Revenue Analytics** (`revenue-analytics.html`): AI-powered insights, revenue trends, and occupancy projections.
+   - **Inventory & Maintenance** (`inventory.html`): Track hostel assets (AC, Furniture) and log maintenance requests.
+   - **Staff Management** (`staff.html`): Add and manage hostel staff with role-based access controls.
 
 #### How to Contribute:
 ```bash
@@ -209,7 +225,7 @@ git checkout -b feature/hostel-owner-module
 ---
 
 ### 🟠 Imran - Profile & Settings Module
-**Priority: MEDIUM | Deadline: Jan 8, 2025**
+**Priority: High | Deadline: Jan 8, 2025**
 
 #### Assigned Tasks:
 1. **Create Student Profile Page** (`profile.html`)

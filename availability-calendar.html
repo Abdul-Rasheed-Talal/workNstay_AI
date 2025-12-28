@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Availability Calendar - WorkNStay AI">
+    <title>Availability Calendar - WorkNStay AI</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--gray-100);
+        }
+
+        .calendar-wrapper {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--gray-100);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-header {
+            display: grid;
+            grid-template-columns: 200px repeat(14, 1fr);
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .header-cell {
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-align: center;
+            border-right: 1px solid var(--gray-200);
+        }
+
+        .header-cell:first-child {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .calendar-body {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .calendar-row {
+            display: grid;
+            grid-template-columns: 200px repeat(14, 1fr);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .room-cell {
+            padding: 16px 20px;
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            position: sticky;
+            left: 0;
+            z-index: 10;
+        }
+
+        .room-name {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+        }
+
+        .room-type {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .grid-cell {
+            padding: 8px;
+            border-right: 1px solid var(--gray-100);
+            min-height: 60px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .grid-cell:hover {
+            background: var(--gray-50);
+        }
+
+        .booking-bar {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 32px;
+            border-radius: 6px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            color: white;
+            z-index: 5;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .booking-confirmed {
+            background: var(--primary);
+        }
+
+        .booking-pending {
+            background: var(--accent-gold);
+        }
+
+        .booking-blocked {
+            background: var(--gray-400);
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            padding: 0 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 1200px) {
+            .calendar-wrapper {
+                overflow-x: auto;
+            }
+
+            .calendar-header,
+            .calendar-row {
+                width: 1400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-brand">
+                    <div class="logo-icon">
+                        <i class="bi bi-house-heart-fill"></i>
+                    </div>
+                    <span>WorkNStay AI</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="hostel-owner-dashboard.html" class="nav-item">
+                        <i class="bi bi-grid-1x2"></i> Dashboard
+                    </a>
+                    <a href="availability-calendar.html" class="nav-item active">
+                        <i class="bi bi-calendar3"></i> Availability
+                    </a>
+                    <a href="manage-bookings.html" class="nav-item">
+                        <i class="bi bi-calendar-check"></i> Manage Bookings
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Enterprise</div>
+                    <a href="revenue-analytics.html" class="nav-item">
+                        <i class="bi bi-bar-chart-line"></i> Revenue Analytics
+                    </a>
+                    <a href="inventory.html" class="nav-item">
+                        <i class="bi bi-box-seam"></i> Inventory
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Availability Calendar</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn-custom btn-primary btn-sm">
+                        <i class="bi bi-plus-lg"></i> Bulk Block
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="calendar-controls fade-in">
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn-custom btn-outline-primary btn-sm"><i
+                                class="bi bi-chevron-left"></i></button>
+                        <h4 class="mb-0 fw-bold">December 2024</h4>
+                        <button class="btn-custom btn-outline-primary btn-sm"><i
+                                class="bi bi-chevron-right"></i></button>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <select class="form-select form-select-sm" style="width: 180px;">
+                            <option>All Room Types</option>
+                            <option>Single Room</option>
+                            <option>Shared (3 beds)</option>
+                        </select>
+                        <button class="btn-custom btn-outline-primary btn-sm">Today</button>
+                    </div>
+                </div>
+
+                <div class="calendar-wrapper fade-in delay-1">
+                    <div class="calendar-header">
+                        <div class="header-cell">Rooms / Beds</div>
+                        <div class="header-cell">Dec 20</div>
+                        <div class="header-cell">Dec 21</div>
+                        <div class="header-cell">Dec 22</div>
+                        <div class="header-cell text-primary bg-primary-subtle">Dec 23</div>
+                        <div class="header-cell">Dec 24</div>
+                        <div class="header-cell">Dec 25</div>
+                        <div class="header-cell">Dec 26</div>
+                        <div class="header-cell">Dec 27</div>
+                        <div class="header-cell">Dec 28</div>
+                        <div class="header-cell">Dec 29</div>
+                        <div class="header-cell">Dec 30</div>
+                        <div class="header-cell">Dec 31</div>
+                        <div class="header-cell">Jan 01</div>
+                        <div class="header-cell">Jan 02</div>
+                    </div>
+
+                    <div class="calendar-body">
+                        <!-- Room 101 -->
+                        <div class="calendar-row">
+                            <div class="room-cell">
+                                <span class="room-name">Room 101A (Bed 1)</span>
+                                <span class="room-type">Shared (3 Beds)</span>
+                            </div>
+                            <div class="grid-cell">
+                                <div class="booking-bar booking-confirmed" style="width: 380%;">Ahmed Khan</div>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell">
+                                <div class="booking-bar booking-pending" style="width: 280%;">Zohaib Ali</div>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+
+                        <!-- Room 101 Bed 2 -->
+                        <div class="calendar-row">
+                            <div class="room-cell">
+                                <span class="room-name">Room 101B (Bed 2)</span>
+                                <span class="room-type">Shared (3 Beds)</span>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell">
+                                <div class="booking-bar booking-confirmed" style="width: 580%;">Usman Ghani</div>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+
+                        <!-- Room 202 (Single) -->
+                        <div class="calendar-row">
+                            <div class="room-cell">
+                                <span class="room-name">Room 202</span>
+                                <span class="room-type">Luxury Single</span>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell">
+                                <div class="booking-bar booking-blocked" style="width: 280%;">Maintenance</div>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell">
+                                <div class="booking-bar booking-confirmed" style="width: 780%;">Sara Ali</div>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+
+                        <!-- Room 203 -->
+                        <div class="calendar-row">
+                            <div class="room-cell">
+                                <span class="room-name">Room 203</span>
+                                <span class="room-type">Private Single</span>
+                            </div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="legend fade-in delay-2">
+                    <div class="legend-item">
+                        <div class="legend-color booking-confirmed"></div>
+                        <span>Confirmed Booking</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color booking-pending"></div>
+                        <span>Pending Request</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color booking-blocked"></div>
+                        <span>Blocked / Maintenance</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hostel-owner.js"></script>
+</body>
+
+</html>
